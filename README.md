@@ -21,7 +21,9 @@ the results.  The set cBathy input data is constained  the folder
 NOTE that the results for the Kalman demo are stored in a
 different location, simply for demo purposes (since many people may end
 up using the toolbox).  Normally you would save the results back to the
-input file location but now with the runningAverage field filled in.  
+input file location but now with the runningAverage field filled in. 
+For comparison, the CRAB survey from three days prior is included in the 
+file 19-Oct-2010FRFGridded.mat.
  
 The first part (democBathy) needs only the stack information and the
 tide, although if the tide is not found the routine should continue but
