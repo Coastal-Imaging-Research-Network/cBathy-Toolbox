@@ -1,0 +1,37 @@
+
+Logic for analyzeBathyCollect version 2
+
+	- no tiles, each x,y done independently
+	- ie., csmInvertKAlpha does one x,y at a time, 
+	  returns only fDependent
+
+analyzeBathyCollect
+	
+	output: bathy  (final results)
+	input:  xyz, epoch, data  (data from stacks)
+	        bathy (with params)
+
+
+	prepBathyInput( xyz, epoch, data, bathy )
+
+		output: f, G, bathy with empty data, allx, ally
+
+	parfor loop on allx, ally
+
+	    subBathyProcess( f, G, xyz, ax, ay, params )
+		output: fDependent
+
+		spatialLimitBathy( f, G, xyz, params, ax, ay )
+			output: subG, subxyz
+
+		csmInvertKAlpha( f, subG, subxyz, ax, ay, params )
+			output: fDependent
+
+	    stuff fDependent back into main bathy
+
+	end parfor
+
+	convert bathy fDependent to final output
+
+
+end

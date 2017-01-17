@@ -1,0 +1,53 @@
+function map = showcBathyTimeSeriesMovieNotCIL(sn,pa, map)
+%
+%  map = showcBathyTimeSeriesMovienNotCIL(stackName,pixArraySpecs,map)
+%
+%  load a full cBathy data collection and show as a movie.  This is to
+%  allow debugging, i.e. letting you see if actual waves are there.
+%  The pixels are converted from discrete locations to a mapping in a
+%  regular array under the assumption that they were designed as an array.
+%  The array is described by user input information
+%
+%  if pixArraySpecs is missing or empty, create a default array covering
+%  the entire stack collection area at a spacing of 20m. If is is a 2
+%  element array, it is [dx dy]. Otherwise
+%  pixArraySpecs = [xMin dx xMax yMin dy yMax].  
+%
+%  The mapping between stack
+%  columns and this array is returned as map and can presumably be used many
+%  times if the geometry is unchanging.
+%
+%  If nargin is three, the third argument is assumed to be the mapping and
+%  a new map is not calculated.
+
+load(sn)
+% if there was no map passed in, create an empty one
+if nargin < 3
+    map = [];
+end
+
+% if nargin < 2, create a default pa
+if nargin < 2
+    pa = [ 20 20 ];
+end
+
+if( length(pa) == 2 )
+     pa = [min(xyz(:,1)) pa(1) max(xyz(:,1)) ...
+           min(xyz(:,2)) pa(2) max(xyz(:,2)) ];
+end
+
+% and then call this function. If it has a valid map, it will
+% create only x and y. This is to keep from duplicating code
+% to do that.
+[x,y,map] = findInterpMap( xyz, pa, map );
+Nx = length(x); 
+Ny = length(y);
+
+figure(2); clf; colormap gray
+data = double(data);
+I = nan(Ny,Nx);
+for ii = 1: length(t)
+    I = reshape(data(ii,map),Ny,Nx);
+    imagesc(x,y,log(I)); axis xy; axis equal; axis tight
+    pause(0.2)
+end
