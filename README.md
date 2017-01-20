@@ -4,7 +4,7 @@
 When you type 'help {toolboxName}' where you insert your own toolbox
 name, will give the Contents of the toolbox.
  
-Logic.txt outlines the order of how analysis routines are called.
+The outline below shows the order of how analysis routines are called.
  
 This toolbox has been extacted from the full CIL version and SHOULD work
 on a standalone basis.  In doing this, a number of checks have been removed
@@ -49,3 +49,41 @@ location.
 Please let us know if problems arise so that we can keep the code
 bulletproof.
 
+
+
+Logicial Outline for analyzeBathyCollect version 2
+
+	- no tiles, each x,y done independently
+	- ie., csmInvertKAlpha does one x,y at a time, 
+	  returns only fDependent
+
+analyzeBathyCollect
+	
+	output: bathy  (final results)
+	input:  xyz, epoch, data  (data from stacks)
+	        bathy (with params)
+
+
+	prepBathyInput( xyz, epoch, data, bathy )
+
+		output: f, G, bathy with empty data, allx, ally
+
+	parfor loop on allx, ally
+
+	    subBathyProcess( f, G, xyz, ax, ay, params )
+		output: fDependent
+
+		spatialLimitBathy( f, G, xyz, params, ax, ay )
+			output: subG, subxyz
+
+		csmInvertKAlpha( f, subG, subxyz, ax, ay, params )
+			output: fDependent
+
+	    stuff fDependent back into main bathy
+
+	end parfor
+
+	convert bathy fDependent to final output
+
+
+end
