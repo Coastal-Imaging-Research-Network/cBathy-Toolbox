@@ -53,37 +53,31 @@ bulletproof.
 
 Logicial Outline for analyzeBathyCollect version 2
 
-	- no tiles, each x,y done independently
-	- ie., csmInvertKAlpha does one x,y at a time, 
-	  returns only fDependent
+- no tiles, each x,y done independently
+- ie., csmInvertKAlpha does one x,y at a time, returns only fDependent
 
+```
 analyzeBathyCollect
-	
-	output: bathy  (final results)
-	input:  xyz, epoch, data  (data from stacks)
-	        bathy (with params)
+input:  xyz, epoch, data  (data from stacks), bathy (with params)
+output: bathy  (final results)
 
+prepBathyInput( xyz, epoch, data, bathy )
+output: f, G, bathy with empty data, allx, ally
 
-	prepBathyInput( xyz, epoch, data, bathy )
+parfor loop on allx, ally
 
-		output: f, G, bathy with empty data, allx, ally
+subBathyProcess( f, G, xyz, ax, ay, params )
+output: fDependent
 
-	parfor loop on allx, ally
+spatialLimitBathy( f, G, xyz, params, ax, ay )
+output: subG, subxyz
 
-	    subBathyProcess( f, G, xyz, ax, ay, params )
-		output: fDependent
+csmInvertKAlpha( f, subG, subxyz, ax, ay, params )
+output: fDependent
 
-		spatialLimitBathy( f, G, xyz, params, ax, ay )
-			output: subG, subxyz
+stuff fDependent back into main bathy
 
-		csmInvertKAlpha( f, subG, subxyz, ax, ay, params )
-			output: fDependent
+end parfor
 
-	    stuff fDependent back into main bathy
-
-	end parfor
-
-	convert bathy fDependent to final output
-
-
-end
+convert bathy fDependent to final output
+```
