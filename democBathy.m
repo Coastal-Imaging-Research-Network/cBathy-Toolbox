@@ -8,6 +8,7 @@ clear
 stationStr = 'argus02a';
 stackName = 'testStack102210Duck';
 bathy = analyzeSingleBathyRunNotCIL(stackName, stationStr);
+bathy.params.debug.production=0;
 plotBathyCollect(bathy)
 
 % Now compare this result with a supplied example CRAB survey from three
