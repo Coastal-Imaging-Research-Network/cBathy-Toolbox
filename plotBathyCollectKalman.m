@@ -1,4 +1,4 @@
-function f = plotBathyCollectSDS(bathy)
+function f = plotBathyCollectKalman(bathy)
 
 %
 %   plotBathyCollect(bathy)
@@ -42,7 +42,9 @@ ylabel('y (Relative m)');
 h=colorbar('peer', gca);
 set( h, 'ydir', 'rev' ); 
 foo = get( h, 'yticklabel' );
-foo = num2str( abs(str2num(foo)), '%.1f' );
+for ll=1:length(foo)
+foo{ll} = num2str( abs(str2num(foo{ll})), '%.1f' );
+end
 set( h, 'yticklabel', foo );
 set( get(h,'title'), 'string', 'hErr (m)' );
 
