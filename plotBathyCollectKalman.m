@@ -42,6 +42,7 @@ ylabel('y (Relative m)');
 h=colorbar('peer', gca);
 set( h, 'ydir', 'rev' ); 
 foo = get( h, 'yticklabel' );
+foo = cellstr(foo);
 for ll=1:length(foo)
 foo{ll} = num2str( abs(str2num(foo{ll})), '%.1f' );
 end
