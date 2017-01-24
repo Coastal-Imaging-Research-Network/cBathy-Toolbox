@@ -28,10 +28,15 @@ for i = 2: length(fns)
     eval(['save ' cBOutputPn,filesep, fns(i).name, ' bathy'])
 end
 
-% display the results
-fns = dir([cBOutputPn,filesep,'*.mat']);
-for i = 1: length(fns)
-    load([cBOutputPn, filesep, fns(i).name])
-    plotBathyCollectKalman(bathy)
-    pause
-end
+% ONLY IF YOU WANT, DISPLAY RESULTS TO UNDERSTAND HOW THE KALMAN
+% FILTER WORKS.  Usually you would NOT do this and it is only 
+% included for demo purposes.  To avoid confusion it is now 
+% commented out.  Uncomment to use.
+
+%fns = dir([cBOutputPn,filesep,'*.mat']);
+
+%for i = 1: length(fns)
+%    load([cBOutputPn, filesep, fns(i).name])
+%    plotBathyCollectKalman(bathy)
+%    pause('Hit enter to continue to next collection')
+%end
