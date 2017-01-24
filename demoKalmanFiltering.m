@@ -28,7 +28,9 @@ for i = 2: length(fns)
     eval(['save ' cBOutputPn fns(i).name ' bathy'])
 end
 
-% display the results
+% ONLY IF YOU WANT, DISPLAY RESULTS TO UNDERSTAND HOW THE KALMAN
+% FILTER WORKS.  Usually you would NOT do this and it is only 
+% included for demo purposes.
 fns = dir([cBOutputPn '*cBathy*']);
 for i = 1: length(fns)
     load([cBOutputPn fns(i).name])
