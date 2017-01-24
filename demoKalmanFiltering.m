@@ -36,5 +36,5 @@ fns = dir([cBOutputPn '*cBathy*']);
 for i = 1: length(fns)
     load([cBOutputPn fns(i).name])
     plotBathyCollectKalman(bathy)
-    pause
+    pause('Hit enter to continue to next collection')
 end
