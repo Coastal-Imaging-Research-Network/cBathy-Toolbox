@@ -33,10 +33,10 @@ end
 % included for demo purposes.  To avoid confusion it is now 
 % commented out.  Uncomment to use.
 
-%fns = dir([cBOutputPn,filesep,'*.mat']);
+fns = dir([cBOutputPn,filesep,'*.mat']);
 
-%for i = 1: length(fns)
-%    load([cBOutputPn, filesep, fns(i).name])
-%    plotBathyCollectKalman(bathy)
-%    pause('Hit enter to continue to next collection')
-%end
+for i = 1: length(fns)
+   load([cBOutputPn, filesep, fns(i).name])
+   plotBathyCollectKalman(bathy)
+   pause(2)
+end
