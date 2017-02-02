@@ -46,8 +46,8 @@ a CIL station and will fall back to a single input argument version
 (time), leaving the user responsible for chosing the correct tide
 location.  
  
-Please let us know if problems arise so that we can keep the code
-bulletproof.
+Please let us know if problems arise
+[HERE](https://github.com/Coastal-Imaging-Research-Network/cBathy-Toolbox/issues)
 
 
 
