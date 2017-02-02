@@ -8,6 +8,7 @@ clear
 stationStr = 'argus02a';
 stackName = 'testStack102210Duck';
 bathy = analyzeSingleBathyRunNotCIL(stackName, stationStr);
+bathy.params.debug.production=1;
 plotBathyCollect(bathy)
 
 % Now compare this result with a supplied example CRAB survey from three
@@ -33,3 +34,4 @@ title(['cBathy, ' datestr(epoch2Matlab(str2num(bathy.epoch)))])
 % the user manual.  This is done by setting params.debug.production to 0.
 % You may want to change some of the debug options.  You then simply repeat
 % the analyzeSingleBathyNotCIL commands.
+
