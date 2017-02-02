@@ -14,34 +14,26 @@ k = k.*w;
 
 %
 
-% Copyright by Oregon State University, 2011
+%   Copyright (C) 2017  Coastal Imaging Research Network
+%                       and Oregon State University
 
-% Developed through collaborative effort of the Argus Users Group
+%    This program is free software: you can redistribute it and/or  
+%    modify it under the terms of the GNU General Public License as 
+%    published by the Free Software Foundation, version 3 of the 
+%    License.
 
-% For official use by the Argus Users Group or other licensed activities.
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
 
+%    You should have received a copy of the GNU General Public License
+%    along with this program.  If not, see
+%                                <http://www.gnu.org/licenses/>.
+
+% CIRN: https://coastal-imaging-research-network.github.io/
+% CIL:  http://cil-www.coas.oregonstate.edu
 %
-
-% $Id: kInvertDepthModel.m,v 1.2 2012/09/24 23:24:48 stanley Exp $
-
-%
-
-% $Log: kInvertDepthModel.m,v $
-% Revision 1.2  2012/09/24 23:24:48  stanley
-% fix case in name
-%
-
-% Revision 1.1  2011/08/08 00:28:52  stanley
-
-% Initial revision
-
-%
-
-%
-
-%key whatever is right, do it
-
-%comment  
-
+%key cBathy
 %
 
