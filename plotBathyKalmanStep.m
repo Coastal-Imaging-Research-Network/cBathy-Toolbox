@@ -41,7 +41,7 @@ xlabel('x (Relative m)'); ylabel('y (Relative m)');
 title('Prior Err')
 h=colorbar('peer', gca); set( h, 'ydir', 'rev' ); 
 foo = get( h, 'yticklabel' );
-foo = num2str( abs(str2num(foo)), '%.1f' );
+foo = strrep(foo,'-','');
 set( h, 'yticklabel', foo );
 set( get(h,'title'), 'string', '(m)' );
 
@@ -53,7 +53,7 @@ xlabel('x (Relative m)'); ylabel('y (Relative m)');
 title('Obs Err')
 h=colorbar('peer', gca); set( h, 'ydir', 'rev' ); 
 foo = get( h, 'yticklabel' );
-foo = num2str( abs(str2num(foo)), '%.1f' );
+foo = strrep(foo,'-','');
 set( h, 'yticklabel', foo );
 set( get(h,'title'), 'string', '(m)' );
 
@@ -65,24 +65,30 @@ xlabel('x (Relative m)'); ylabel('y (Relative m)');
 title('K')
 h=colorbar('peer', gca);  
 foo = get( h, 'yticklabel' );
-foo = num2str( abs(str2num(foo)), '%.1f' );
+foo = strrep(foo,'-','');
 set( h, 'yticklabel', foo );
 
 %
-% Copyright by Oregon State University, 2011
-% Developed through collaborative effort of the Argus Users Group
-% For official use by the Argus Users Group or other licensed activities.
+%   Copyright (C) 2017  Coastal Imaging Research Network
+%                       and Oregon State University
+
+%    This program is free software: you can redistribute it and/or  
+%    modify it under the terms of the GNU General Public License as 
+%    published by the Free Software Foundation, version 3 of the 
+%    License.
+
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+
+%    You should have received a copy of the GNU General Public License
+%    along with this program.  If not, see
+%                                <http://www.gnu.org/licenses/>.
+
+% CIRN: https://coastal-imaging-research-network.github.io/
+% CIL:  http://cil-www.coas.oregonstate.edu
 %
-% $Id: plotBathyKalmanStep.m,v 1.2 2012/09/24 23:28:22 stanley Exp $
+%key cBathy
 %
-% $Log: plotBathyKalmanStep.m,v $
-% Revision 1.2  2012/09/24 23:28:22  stanley
-% plot limits
-%
-% Revision 1.1  2011/08/08 00:28:52  stanley
-% Initial revision
-%
-%
-%key whatever is right, do it
-%comment  
-%
+

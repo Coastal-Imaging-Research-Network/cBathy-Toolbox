@@ -33,10 +33,33 @@ end
 % included for demo purposes.  To avoid confusion it is now 
 % commented out.  Uncomment to use.
 
-%fns = dir([cBOutputPn,filesep,'*.mat']);
+fns = dir([cBOutputPn,filesep,'*.mat']);
 
-%for i = 1: length(fns)
-%    load([cBOutputPn, filesep, fns(i).name])
-%    plotBathyCollectKalman(bathy)
-%    pause('Hit enter to continue to next collection')
-%end
+for i = 1: length(fns)
+   load([cBOutputPn, filesep, fns(i).name])
+   plotBathyCollectKalman(bathy)
+   pause(2)
+end
+%   Copyright (C) 2017  Coastal Imaging Research Network
+%                       and Oregon State University
+
+%    This program is free software: you can redistribute it and/or  
+%    modify it under the terms of the GNU General Public License as 
+%    published by the Free Software Foundation, version 3 of the 
+%    License.
+
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+
+%    You should have received a copy of the GNU General Public License
+%    along with this program.  If not, see
+%                                <http://www.gnu.org/licenses/>.
+
+% CIRN: https://coastal-imaging-research-network.github.io/
+% CIL:  http://cil-www.coas.oregonstate.edu
+%
+%key cBathy
+%
+
