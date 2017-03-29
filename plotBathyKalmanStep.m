@@ -41,7 +41,7 @@ xlabel('x (Relative m)'); ylabel('y (Relative m)');
 title('Prior Err')
 h=colorbar('peer', gca); set( h, 'ydir', 'rev' ); 
 foo = get( h, 'yticklabel' );
-foo = num2str( abs(str2num(foo)), '%.1f' );
+foo = strrep(foo,'-','');
 set( h, 'yticklabel', foo );
 set( get(h,'title'), 'string', '(m)' );
 
@@ -53,7 +53,7 @@ xlabel('x (Relative m)'); ylabel('y (Relative m)');
 title('Obs Err')
 h=colorbar('peer', gca); set( h, 'ydir', 'rev' ); 
 foo = get( h, 'yticklabel' );
-foo = num2str( abs(str2num(foo)), '%.1f' );
+foo = strrep(foo,'-','');
 set( h, 'yticklabel', foo );
 set( get(h,'title'), 'string', '(m)' );
 
@@ -65,7 +65,7 @@ xlabel('x (Relative m)'); ylabel('y (Relative m)');
 title('K')
 h=colorbar('peer', gca);  
 foo = get( h, 'yticklabel' );
-foo = num2str( abs(str2num(foo)), '%.1f' );
+foo = strrep(foo,'-','');
 set( h, 'yticklabel', foo );
 
 %
