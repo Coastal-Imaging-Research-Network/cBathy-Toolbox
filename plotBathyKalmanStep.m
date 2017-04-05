@@ -65,6 +65,7 @@ xlabel('x (Relative m)'); ylabel('y (Relative m)');
 title('K')
 h=colorbar('peer', gca);  
 foo = get( h, 'yticklabel' );
+foo = strrep(foo,'-','');
 set( h, 'yticklabel', foo );
 
 %
