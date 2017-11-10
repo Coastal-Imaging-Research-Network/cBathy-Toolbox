@@ -1,10 +1,10 @@
-function fDep = subBathyProcess( f, G, xyz, xm, ym, params, kappa )
+function [fDep, camUsed] = subBathyProcess( f, G, xyz, cam, xm, ym, params, kappa )
 
 %% subBathyProcess -- extract region from full bathy stack, process
 %
-%  fDep = subBathyProcess( f, G, xyz, xm, ym, params, kappa )
+%  [fDep,camUsed] = subBathyProcess( f, G, xyz, cam, xm, ym, params, kappa )
 %
-%  f, G, xyz are the full arryms. 
+%  f, G, xyz, cam are the full arryms. 
 %  xm,ym is the desired analysis point.
 %  params is the parameter structure
 %  kappa is the cross-shore variable sample domain scaling factor for this
@@ -13,7 +13,7 @@ function fDep = subBathyProcess( f, G, xyz, xm, ym, params, kappa )
 
 %% first extract sub region
 
-[subG, subXYZ] = spatialLimitBathy( G, xyz, xm, ym, params, kappa );
+[subG, subXYZ, camUsed] = spatialLimitBathy( G, xyz, cam, xm, ym, params, kappa );
 if( cBDebug( params, 'DOSHOWPROGRESS' ))
     figure(21);
     foo = findobj('tag','pixDots'); % tidy up old locations
@@ -33,6 +33,7 @@ end
 
 if isempty(subG)
 	fDep.k = nan(params.nKeep,1);
+	camUsed = -1;
 	return;
 end
 

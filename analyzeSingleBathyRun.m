@@ -11,8 +11,8 @@ eval(n.station)
 bathy.epoch = n.time;
 bathy.sName = stackName;
 bathy.params = params;
-[xyz, epoch, data] = loadBathyStack(bathy.sName, bathy.params.DECIMATE);
-bathy = analyzeBathyCollect(xyz, epoch, data, bathy);
+[xyz, epoch, data, cam] = loadBathyStack(bathy.sName, bathy.params.DECIMATE);
+bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy);
 
 %
 %   Copyright (C) 2017  Coastal Imaging Research Network

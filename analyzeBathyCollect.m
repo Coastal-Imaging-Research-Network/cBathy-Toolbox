@@ -1,8 +1,8 @@
-function bathy = analyzeBathyCollect(xyz, epoch, data, bathy)
+function bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy)
 
 %%
 %
-%  bathy = analyzeBathyCollect(xyz, epoch, data, bathy);
+%  bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy);
 %
 %  cBathy main analysis routine.  Input data from a time
 %  stack includes xyz, epoch and data as well as the initial fields
@@ -50,9 +50,9 @@ if( cBDebug( bathy.params, 'DOSHOWPROGRESS' ))
     title('Analysis Progress'); drawnow;
     hold on
 end
-% str = [bathy.sName(16:21) ', ' bathy.sName(36:39) ', ' bathy.sName([23 24 26 27])];
+str = [bathy.sName(16:21) ', ' bathy.sName(36:39) ', ' bathy.sName([23 24 26 27])];
 if cBDebug( bathy.params )
-	hWait = waitbar(0);
+	hWait = waitbar(0, str);
 end;
 
 for xind = 1:length(bathy.xm)
@@ -66,18 +66,20 @@ for xind = 1:length(bathy.xm)
     
     if( cBDebug( bathy.params, 'DOSHOWPROGRESS' ))
         for yind = 1:length(bathy.ym)
-            fDep{yind} = subBathyProcess( f, G, xyz, ...
+            [fDep{yind},camUsed(yind)] = subBathyProcess( f, G, xyz, cam, ...
                 bathy.xm(xind), bathy.ym(yind), bathy.params, kappa );
         end
     else  
         parfor yind = 1:length(bathy.ym)
-            fDep{yind} = subBathyProcess( f, G, xyz, ...
+            [fDep{yind},camUsed(yind)] = subBathyProcess( f, G, xyz, cam, ...
                 bathy.xm(xind), bathy.ym(yind), bathy.params, kappa );
         end  %% parfor yind
     end
     
     % stuff fDependent data back into bathy (outside parfor)
     for ind = 1:length(bathy.ym)
+
+	bathy.camUsed(ind,xind) = camUsed(ind);
         
         if( any( ~isnan( fDep{ind}.k) ) )  % not NaN, valid data.
             bathy.fDependent.fB(ind, xind, :) = fDep{ind}.fB(:);
