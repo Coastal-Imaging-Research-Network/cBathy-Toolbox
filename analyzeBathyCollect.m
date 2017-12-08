@@ -110,6 +110,8 @@ bathy = bathyFromKAlpha(bathy);
 
 bathy = fixBathyTide(bathy);
 
+bathy.version = cBathyVersion();
+
 %if ((exist(bathy.params.tideFunction) == 2))   % existing function
 %    try
 %        foo = parseFilename(bathy.sName);
