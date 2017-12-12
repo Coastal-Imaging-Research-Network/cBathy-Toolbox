@@ -6,10 +6,12 @@ function bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy)
 %
 %  cBathy main analysis routine.  Input data from a time
 %  stack includes xyz, epoch and data as well as the initial fields
-%  of the bathy structure.  Returns an
+%  of the bathy structure.  In v1.2, cam is now an input, which is a vector 
+%  containing a number for which camera each pixel stack came from. Returns an
 %  augmented structure with new fields 'fDependent' that contains all
 %  the frequency dependent results and fCombined that contains the
-%  estimated bathymetry and errors.
+%  estimated bathymetry and errors. In v1.2, camUsed is also returned,
+%  which is a matrix identifying which camera data came from.
 %  bathy input is expected to have fields .epoch, .sName and .params.
 %  All of the relevant analysis parameters are contained in params.
 %  These are usually set in an m-file (or text file) BWLiteSettings or
