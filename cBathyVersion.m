@@ -1,18 +1,18 @@
-function bathy = analyzeSingleBathyRun(stackName)
-%
-%  bathy = analyzeSingleBathyRun(stackName)
-%
-%  simple run of analyzeBathyCollect for a single stackName.  Useful for
-%  debugging.  Assumes CIL compatible stack.
+function version = cBathyVersion()
 
-DBConnect;
-n = parseFilename(stackName);
-eval(n.station)
-bathy.epoch = n.time;
-bathy.sName = stackName;
-bathy.params = params;
-[xyz, epoch, data, cam] = loadBathyStack(bathy.sName, bathy.params.DECIMATE);
-bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy);
+%  version = cBathyVersion();
+%
+%  return the version number of cBathy, to be saved with the cBathy
+%  struct.
+
+
+% version 1.1 = master until December, 2017. Has large kh fix.  
+% Removes need for maxDepth.
+% version = 1.1;
+
+% adds seam fix from OSU. Also new initialization function to improve
+% initial guesses.
+version = 1.2;
 
 %
 %   Copyright (C) 2017  Coastal Imaging Research Network
