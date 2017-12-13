@@ -1,4 +1,4 @@
-function [x,y,map,wt] = findInterpMap2(xyz,pa,map,kn,doNan)
+function [x,y,map,wt] = findInterpMap(xyz,pa,map,kn,doNan)
 %  [x,y,map,weight] = findInterpMap(xyz,pixelArray,map,N,doNan);
 %
 %  compute a lookup interpolation map between columns of a stack and an
@@ -16,7 +16,7 @@ function [x,y,map,wt] = findInterpMap2(xyz,pa,map,kn,doNan)
 %  
 %  doNan is a flag that specifies that any points further than doNan units
 %  away from the nearest neighbor will return -1 in map, which will be
-%  converted to NaN in the output of useInterpMap2. Zero means don't do
+%  converted to NaN in the output of useInterpMap. Zero means don't do
 %  that. If you use doNan, you must provide N. 
 
 x = [pa(1):pa(2):pa(3)];
