@@ -1,15 +1,17 @@
-function bathy = analyzeBathyCollect(xyz, epoch, data, bathy)
+function bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy)
 
 %%
 %
-%  bathy = analyzeBathyCollect(xyz, epoch, data, bathy);
+%  bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy);
 %
 %  cBathy main analysis routine.  Input data from a time
 %  stack includes xyz, epoch and data as well as the initial fields
-%  of the bathy structure.  Returns an
+%  of the bathy structure.  In v1.2, cam is now an input, which is a vector 
+%  containing a number for which camera each pixel stack came from. Returns an
 %  augmented structure with new fields 'fDependent' that contains all
 %  the frequency dependent results and fCombined that contains the
-%  estimated bathymetry and errors.
+%  estimated bathymetry and errors. In v1.2, camUsed is also returned,
+%  which is a matrix identifying which camera data came from.
 %  bathy input is expected to have fields .epoch, .sName and .params.
 %  All of the relevant analysis parameters are contained in params.
 %  These are usually set in an m-file (or text file) BWLiteSettings or
@@ -50,9 +52,9 @@ if( cBDebug( bathy.params, 'DOSHOWPROGRESS' ))
     title('Analysis Progress'); drawnow;
     hold on
 end
-% str = [bathy.sName(16:21) ', ' bathy.sName(36:39) ', ' bathy.sName([23 24 26 27])];
+str = [bathy.sName(16:21) ', ' bathy.sName(36:39) ', ' bathy.sName([23 24 26 27])];
 if cBDebug( bathy.params )
-	hWait = waitbar(0);
+	hWait = waitbar(0, str);
 end;
 
 for xind = 1:length(bathy.xm)
@@ -66,18 +68,20 @@ for xind = 1:length(bathy.xm)
     
     if( cBDebug( bathy.params, 'DOSHOWPROGRESS' ))
         for yind = 1:length(bathy.ym)
-            fDep{yind} = subBathyProcess( f, G, xyz, ...
+            [fDep{yind},camUsed(yind)] = subBathyProcess( f, G, xyz, cam, ...
                 bathy.xm(xind), bathy.ym(yind), bathy.params, kappa );
         end
     else  
         parfor yind = 1:length(bathy.ym)
-            fDep{yind} = subBathyProcess( f, G, xyz, ...
+            [fDep{yind},camUsed(yind)] = subBathyProcess( f, G, xyz, cam, ...
                 bathy.xm(xind), bathy.ym(yind), bathy.params, kappa );
         end  %% parfor yind
     end
     
     % stuff fDependent data back into bathy (outside parfor)
     for ind = 1:length(bathy.ym)
+
+	bathy.camUsed(ind,xind) = camUsed(ind);
         
         if( any( ~isnan( fDep{ind}.k) ) )  % not NaN, valid data.
             bathy.fDependent.fB(ind, xind, :) = fDep{ind}.fB(:);
@@ -109,6 +113,8 @@ end;
 bathy = bathyFromKAlpha(bathy);
 
 bathy = fixBathyTide(bathy);
+
+bathy.version = cBathyVersion();
 
 %if ((exist(bathy.params.tideFunction) == 2))   % existing function
 %    try

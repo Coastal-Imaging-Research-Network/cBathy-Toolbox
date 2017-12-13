@@ -1,6 +1,6 @@
-function [xyz, epoch, data] = loadBathyStack(sName, decimate)
+function [xyz, epoch, data, cam] = loadBathyStack(sName, decimate)
 %
-%   [xyz, epoch, data] = loadBathyStack(sName,decimate)
+%   [xyz, epoch, data, cam] = loadBathyStack(sName,decimate)
 %
 %  loads a bathy stack of name sName.  This routine is specific to
 %  Argus protocols and should be replaced for other data sources like
