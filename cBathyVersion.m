@@ -5,14 +5,10 @@ function version = cBathyVersion()
 %  return the version number of cBathy, to be saved with the cBathy
 %  struct.
 
-
-% version 1.1 = master until December, 2017. Has large kh fix.  
-% Removes need for maxDepth.
-% version = 1.1;
-
 % adds seam fix from OSU. Also new initialization function to improve
 % initial guesses.
 version = 1.2;
+
 
 %
 %   Copyright (C) 2017  Coastal Imaging Research Network
