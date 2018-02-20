@@ -39,8 +39,8 @@ for day = JulianDays
         n = parseFilename(sName);
         clear bathy                 % store all here, clear first
         bathy.epoch = n.time; bathy.sName = sName; bathy.params = params;
-        [xyz, epoch, data] = loadBathyStack(bathy.sName, bathy.params.DECIMATE);
-        bathy = analyzeBathyCollect(xyz, epoch, data, bathy);
+        [xyz, epoch, data, cam] = loadBathyStack(bathy.sName, bathy.params.DECIMATE);
+        bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy);
         if ~isempty(bathy)
             plotBathyCollectSDS(bathy);
             saveStr = [n.time n.station]
