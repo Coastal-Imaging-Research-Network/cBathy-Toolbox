@@ -141,7 +141,7 @@ for i = 1:nKeep         % frequency loop
             alphaOffsetWrapped = mod((kAlphaPhi(2)-seedAlpha)+pi,2*pi)-pi;
             % then check if k & alpha are outside acceptable limits
             if ((kAlphaPhi(1)<LB_UB(1,1)) || (kAlphaPhi(1)>LB_UB(2,1)) ...
-                    || abs(alphaOffsetWrapped > maxAlphaOffset))
+                    || abs(alphaOffsetWrapped) > maxAlphaOffset)
                 error;
             end
             % if good, then wrap alpha to a standard range, [-pi, pi)
