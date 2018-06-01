@@ -20,17 +20,30 @@ function bathy = analyzeSingleBathyRunNotCIL(stackPnStr, stationStr)
 eval(stationStr)        % creates the params structure.
 load(stackPnStr)           % load xyz, t, data
 
-% need an array with camera number for data
-% if your stack data doesn't have it, then we have to create a dummy
-%  one. 
-if exist( 'cam', 'var' ) == 0
-    cam = ones( size(xyz,1) , 1);
-end
-
-bathy.epoch = num2str(t(1));
 bathy.sName = stackPnStr;
 bathy.params = params;
-bathy = analyzeBathyCollect(xyz, t, data, cam, bathy);
+
+if exist('XYZ','var')==1 % THen UPPERCASE variables version!   
+  % need an array with camera number for data
+  % if your stack data doesn't have it, then we have to create a dummy
+  %  one. 
+  if exist( 'CAM', 'var' ) == 0
+    CAM = ones(size(XYZ,1) , 1);
+  end        
+   bathy.epoch = num2str(T(1));
+   bathy = analyzeBathyCollect(XYZ, T, RAW, CAM, bathy);
+   
+elseif exist('xyz','var')==1  % Using lowercase variable version!
+  % need an array with camera number for data
+  % if your stack data doesn't have it, then we have to create a dummy
+  %  one.     
+  if exist( 'cam', 'var' ) == 0
+    cam = ones(size(xyz,1) , 1);
+  end      
+   bathy.epoch = num2str(t(1));
+   bathy = analyzeBathyCollect(xyz, t, data, cam, bathy);      
+   
+end
 
 %
 %   Copyright (C) 2017  Coastal Imaging Research Network
