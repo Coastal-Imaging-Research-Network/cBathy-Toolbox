@@ -1,4 +1,4 @@
-function q = predictCSM(kAlphaPhi, xyw)
+function q = predictCSM( kAlphaPhi,xyw)
 % q = predictCSM(kAlphaPhi, xyw)
 %
 % compute complex cross-spectral matrix from wavenumber and direction,
