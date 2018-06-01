@@ -59,10 +59,18 @@ for ix = 1: length(x)
              wMu = 1./interp1(gammaiBar, mu, gamma);
              w = Wmi(id).*wMu.*l.*s./(eps+k);    % weights depend on skill and variance (lam)
             hInit = bathy.fDependent.hTemp(id)'*s / sum(s);
-            [h,resid,jacob] =nlinfit([f, w], k.*w, ...
-                'kInvertDepthModel',hInit, OPTIONS);
+            if params.nlinfit == 1 & ~isempty(ver('stats')) % use the stats toolbox if you have it
+                [h,resid,jacob] =nlinfit([f, w], k.*w, ...
+                    'kInvertDepthModel',hInit, OPTIONS);
+            elseif params.nlinfit == 0 | ~isempty(ver('stats')) % if you don't have the stats toolbox, or you don't want to use it
+                [h,ssq,cnt, res, XY,A,resid] = LMFnlsq('res2',hInit,[f, w], k.*w,'Display',0);
+            end   
             if (~isnan(h))      % some value returned
-                hErr = bathyCI(resid,jacob, w);		 % get limits not bounds
+                if params.nlinfit == 1 & ~isempty(ver('stats')) % use the stats toolbox if you have it
+                    hErr = bathyCI(resid,jacob, w,1);		 % get limits not bounds
+                elseif params.nlinfit == 0 | ~isempty(ver('stats')) % if you don't have the stats toolbox, or you don't want to use it
+                    hErr = bathyCI(resid,A, w,0);		 % get limits not bounds
+                end
                 kModel = kInvertDepthModel(h, [f, w]);
                 J = sqrt(sum(kModel.*k.*w)/(eps+sum(w.^2))); % skill
                 if ((J~=0) && (h>=params.MINDEPTH))
