@@ -6,6 +6,11 @@ function bathy = bathyFromKAlpha(bathy)
 % and find a best solution for each tomographic location using skill
 % and error weightings
 
+% a global flag -- shudder -- to turn the deep water fix OFF
+% easy so that this can be tested at some time TBD
+global CBATHYDoNotDeepWater
+
+
 OPTIONS = statset('nlinfit');   % nlinfit options
 OPTIONS.MaxIter = 30;
 OPTIONS.TolX = 1e-10; %%%1e-3;l
@@ -16,14 +21,17 @@ g = 9.81; % gravity, it's the law!
 ri = [0:0.01:1]';       % create a hanning filter for later interp
 ai = (1 - cos( pi*(0.5 + 0.5*ri) ).^2);
 
-%%lines 18-24, create sensitivity vectors gammaiBar and mu
-% find the dispersion sensitivity, mu.  This will used to interp into
-% gammi, mu, below.
-gammai = [0.0: 0.01: 1];
-gammaiBar = (gammai(1:end-1)+gammai(2:end))/2;
-foo = gammai.*atanh(gammai);
-dFoodGamma = diff(foo)./diff(gammai);
-mu = dFoodGamma./tanh(gammaiBar);
+if( CBATHYDoNotDeepWater )
+else
+    %%lines 18-24, create sensitivity vectors gammaiBar and mu
+    % find the dispersion sensitivity, mu.  This will used to interp into
+    % gammi, mu, below.
+    gammai = [0.0: 0.01: 1];
+    gammaiBar = (gammai(1:end-1)+gammai(2:end))/2;
+    foo = gammai.*atanh(gammai);
+    dFoodGamma = diff(foo)./diff(gammai);
+    mu = dFoodGamma./tanh(gammaiBar);
+end
 
 params = bathy.params;
 nFreqs = size(bathy.fDependent.fB, 3);
@@ -38,7 +46,7 @@ Y = repmat(y', [1, size(x,2), nFreqs]);
 for ix = 1: length(x)
     for iy = 1: length(y)
         kappa = 1 + (bathy.params.kappa0-1)*(x(ix) - xMin)/ ...
-        (xMax - xMin);
+             (xMax - xMin);
         % find range-based weights, Wmi to contribute to total weight
         dxmi = X - x(ix);
         dymi = Y - y(iy);
@@ -56,8 +64,13 @@ for ix = 1: length(x)
             l = bathy.fDependent.lam1(id);
 %             % find dispersion sensitivity
              gamma = 4*pi*pi*f.*f./(g.*k);
-             wMu = 1./interp1(gammaiBar, mu, gamma);
-             w = Wmi(id).*wMu.*l.*s./(eps+k);    % weights depend on skill and variance (lam)
+            if( CBATHYDoNotDeepWater )
+                w = Wmi(id).*l.*s./(eps+k);    % weights depend on skill and variance (lam)
+            else
+                wMu = 1./interp1(gammaiBar, mu, gamma);
+                w = Wmi(id).*wMu.*l.*s./(eps+k);    % weights depend on skill and variance (lam)
+            end
+
             hInit = bathy.fDependent.hTemp(id)'*s / sum(s);
             if params.nlinfit == 1 & ~isempty(ver('stats')) % use the stats toolbox if you have it
                 [h,resid,jacob] =nlinfit([f, w], k.*w, ...

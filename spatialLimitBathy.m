@@ -1,9 +1,9 @@
-function [subG, subXYZ] = spatialLimitBathy(G, xyz, xm, ym, params, kappa )
+function [subG, subXYZ, camUsed] = spatialLimitBathy(G, xyz, cam, xm, ym, params, kappa )
 
 %% spatialLimitBathy -- extract appropriate data from stack for 
 %   processing in the vicinity of xm, ym. 
 %
-% [subG, subXYZ] = spatialLimitBathy( f, G, xyz, xm, ym, params, kappa )
+% [subG, subXYZ, camUsed] = spatialLimitBathy( G, xyz, cam, xm, ym, params, kappa )
 %
 
 % these are the indices of xy data that are within our box
@@ -11,10 +11,34 @@ idUse = find( (xyz(:,1) >= xm-params.Lx*kappa) ...
 	 &    (xyz(:,1) <= xm+params.Lx*kappa) ...
 	 &    (xyz(:,2) >= ym-params.Ly*kappa) ...
 	 &    (xyz(:,2) <= ym+params.Ly*kappa) );
+
+% first decimate to maxNPix per tile, then drop minority cameras at seams.
+% Otherwise you end up limited only by maxNPix and the weightings get funny
+% for tiles with partial coverage.
+
 del = max(1, length(idUse)/params.maxNPix);
 idUse = idUse(round(1: del: length(idUse)));
 subG = G(:,idUse);
 subXYZ = xyz(idUse,:);
+cams = cam(idUse);
+
+% if on seam, limit to the dominant camera bypixel count
+uniqueCams = unique(cams);
+for i = 1: length(uniqueCams)
+    N(i) = length(find(cams==uniqueCams(i)));
+end
+
+pick = [];
+camUsed = -1;
+
+if exist('N')
+    [~,pickCam] = max(N);
+    pick = find(cams==uniqueCams(pickCam));
+    camUsed = uniqueCams(pickCam);
+end
+subG = subG(:,pick);   % keep only those for the majority camera
+subXYZ = subXYZ(pick,:);
+
 
 % problem: we've started getting subG's that came from missing data.
 %  they are Inf because of the normalization in prepBathyInput, and they

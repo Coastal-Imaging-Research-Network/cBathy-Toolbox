@@ -79,6 +79,7 @@ Nym = length(ym);
 nanArray = nan(Nym, Nxm);
 fNanArray = nan([Nym, Nxm, params.nKeep]);
 
+bathy.camUsed = nanArray;
 bathy.fDependent.fB = fNanArray;
 bathy.fDependent.k = fNanArray;
 bathy.fDependent.a = fNanArray;

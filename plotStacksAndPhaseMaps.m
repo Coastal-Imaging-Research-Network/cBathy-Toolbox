@@ -38,14 +38,19 @@ fB = params.fB;
 nf = length(fB);
 nCols = ceil(sqrt(nf));     % chose a reasonable number of rows and cols for display
 nRows = ceil(nf/nCols);
-figure(11); set(gcf, 'name', 'Phase Maps'); clf;
+figure(11); set(gcf, 'name', 'Phase Maps'); clf; colormap('jet');
 for i = 1:nf
-    ind = find(f<=fB(i),1,'last');
-    subplot(nRows, nCols, i); hold on
-    h=scatter3(xyz(:,1),xyz(:,2),angle(G(ind,:)),18,angle(G(ind,:)),'filled');
-    xlabel('x (m)'); ylabel('y (m)'); axis equal, caxis([-pi pi]);
+    ind = find(abs(f-fB(i)) == min(abs(f-fB(i))));
+    subplot(nRows, nCols, i,'FontSize',7); hold on
+    h=scatter(xyz(:,1),xyz(:,2),3,angle(G(ind,:)),'filled');
+    xlabel('x (m)'); 
+    ylabel('y (m)'); 
+    axis equal;
+    caxis([-pi pi]);
     axis ([ min(xyz(:,1)) max(xyz(:,1)) min(xyz(:,2)) max(xyz(:,2))]);
-    view(2); title(['freq = ' num2str(fB(i),'%0.3g') ' Hz']); grid on
+    view(2); 
+    title(['f = ' num2str(fB(i),'%0.3g') ' Hz'],'FontWeight','normal','FontSize',9); 
+    grid on
 end
 
 % figure(3); set(gcf,'name', 'Phase Transects'); clf;
@@ -60,7 +65,7 @@ end
 %     title(['freq = ' num2str(fs(i),'%0.3g') ' Hz']); grid on
 % end
 
-
+%
 %
 %   Copyright (C) 2017  Coastal Imaging Research Network
 %                       and Oregon State University

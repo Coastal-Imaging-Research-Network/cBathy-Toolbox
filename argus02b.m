@@ -1,15 +1,13 @@
 %%% Site-specific Inputs
-params.stationStr = 'argus02a';
+params.stationStr = 'argus02b';
 params.dxm = 10;                    % analysis domain spacing in x
 params.dym = 25;                    % analysis domain spacing in y
-params.xyMinMax = [80 500 0 1000];   % min, max of x, then y
+params.xyMinMax = [80 800 -500 1500];   % min, max of x, then y
                                     % default to [] for cBathy to choose
 params.tideFunction = 'cBathyTide';  % tide level function for evel
 
 %%%%%%%   Power user settings from here down   %%%%%%%
 params.MINDEPTH = 0.25;             % for initialization and final QC
-params.minValsForBathyEst = 4;      % min num f-k pairs for bathy est.
-
 params.QTOL = 0.5;                  % reject skill below this in csm
 params.minLam = 10;                 % min normalized eigenvalue to proceed
 params.Lx = 3*params.dxm;           % tomographic domain smoothing
@@ -17,6 +15,7 @@ params.Ly = 3*params.dym;           %
 params.kappa0 = 2;                  % increase in smoothing at outer xm
 params.DECIMATE = 1;                % decimate pixels to reduce work load.
 params.maxNPix = 80;                % max num pixels per tile (decimate excess)
+params.minValsForBathyEst = 4; 
 
 % f-domain etc.
 params.fB = [1/18: 1/50: 1/4];		% frequencies for analysis (~40 dof)
@@ -33,32 +32,22 @@ params.debug.TRANSECTY = 900;		  % for plotStacksAndPhaseMaps
 % default offshore wave angle.  For search seeds.
 params.offshoreRadCCWFromx = 0;
 
-% choose method for non-linear fit
-params.nlinfit = 0; % flag, 0 = use Richie Slocum's lsr to do non-linear fitting
-                    %       1 = use Matlab Statistics and computer vision
-                    %       toolbox nlinfit.m 
-
 %
-%   Copyright (C) 2017  Coastal Imaging Research Network
-%                       and Oregon State University
-
-%    This program is free software: you can redistribute it and/or  
-%    modify it under the terms of the GNU General Public License as 
-%    published by the Free Software Foundation, version 3 of the 
-%    License.
-
-%    This program is distributed in the hope that it will be useful,
-%    but WITHOUT ANY WARRANTY; without even the implied warranty of
-%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-%    GNU General Public License for more details.
-
-%    You should have received a copy of the GNU General Public License
-%    along with this program.  If not, see
-%                                <http://www.gnu.org/licenses/>.
-
-% CIRN: https://coastal-imaging-research-network.github.io/
-% CIL:  http://cil-www.coas.oregonstate.edu
+% Copyright by Oregon State University, 2011
+% Developed through collaborative effort of the Argus Users Group
+% For official use by the Argus Users Group or other licensed activities.
 %
-%key cBathy
+% $Id: argus02b.m,v 1.2 2016/04/11 23:06:10 stanley Exp $
 %
-
+% $Log: argus02b.m,v $
+% Revision 1.2  2016/04/11 23:06:10  stanley
+% Fix MAXDEPTH
+%
+% Revision 1.1  2012/09/24 23:36:32  stanley
+% Initial revision
+%
+%
+%key 
+%comment  
+%
+params.minValsForBathyEst = 4;

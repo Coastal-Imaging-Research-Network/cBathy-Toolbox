@@ -8,6 +8,9 @@ function bathy = analyzeSingleBathyRunNotCIL(stackPnStr, stationStr)
 %       epoch   - epoch times for each row in stack, Nt by 1
 %       xyz     - xyz locations for each column in stack, Nxyz by 1
 %       data    - Nt by Nxyz matrix of cBathy stack data
+%       cam     - Nt array of camera number for associated data column.
+%                 used to differentiate between data in multi-camera
+%                 stacks to help with camera seams.
 %
 %   stationStr is the name of the station, for example 'argus02b' or
 %   whatever naming convention you chose.  This name MUST correspond to a
@@ -16,10 +19,18 @@ function bathy = analyzeSingleBathyRunNotCIL(stackPnStr, stationStr)
 
 eval(stationStr)        % creates the params structure.
 load(stackPnStr)           % load xyz, t, data
+
+% need an array with camera number for data
+% if your stack data doesn't have it, then we have to create a dummy
+%  one. 
+if exist( 'cam', 'var' ) == 0
+    cam = ones( size(xyz,1) , 1);
+end
+
 bathy.epoch = num2str(t(1));
 bathy.sName = stackPnStr;
 bathy.params = params;
-bathy = analyzeBathyCollect(xyz, t, data, bathy);
+bathy = analyzeBathyCollect(xyz, t, data, cam, bathy);
 
 %
 %   Copyright (C) 2017  Coastal Imaging Research Network
