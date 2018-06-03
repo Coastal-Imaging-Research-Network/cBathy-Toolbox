@@ -34,7 +34,7 @@ params.debug.TRANSECTY = 900;		  % for plotStacksAndPhaseMaps
 params.offshoreRadCCWFromx = 0;
 
 % choose method for non-linear fit
-params.nlinfit = 0; % flag, 0 = use Richie Slocum's lsr to do non-linear fitting
+params.nlinfit = 0; % flag, 0 = use LMFnlsq.m to do non-linear fitting
                     %       1 = use Matlab Statistics and computer vision
                     %       toolbox nlinfit.m 
 
