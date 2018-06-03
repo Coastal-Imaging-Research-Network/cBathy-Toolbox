@@ -32,6 +32,10 @@ params.debug.TRANSECTY = 900;		  % for plotStacksAndPhaseMaps
 % default offshore wave angle.  For search seeds.
 params.offshoreRadCCWFromx = 0;
 
+% choose method for non-linear fit
+params.nlinfit = 0; % flag, 0 = use LMFnlsq.m to do non-linear fitting
+                    %       1 = use Matlab Statistics and computer vision
+                    %       toolbox nlinfit.m 
 %
 % Copyright by Oregon State University, 2011
 % Developed through collaborative effort of the Argus Users Group
