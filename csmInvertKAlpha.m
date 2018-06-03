@@ -31,9 +31,10 @@ function fDependent = ...
 % 09/01/11 - Holman rewrite to finally get rid of tiling and analyze a
 %   single location only
 % 12/05/11 - Holman major change to base on EOFs rather than direct from CSM
+% 5/19/2018  - Palmsten add option to use Richie Slocum's nonlinear fit
+% instead of nlinfit.m from Matlab Statistics and Machine Learning Toolbox
 
 %% %%  1. constants and parameters
-
 clear fDependent
 g=9.81;                         % 'g'
 minNeededPixels = 6;            % to avoid edge anomalies
@@ -134,8 +135,16 @@ for i = 1:nKeep         % frequency loop
         try
             % do nonlinear fit on surviving data
             kAlphaPhiInit = findKAlphaPhiInit(v, xy, LB_UB, params);
-            [kAlphaPhi,resid,jacob] = nlinfit([xy w], [real(v); imag(v)],...
-                           'predictCSM',kAlphaPhiInit, OPTIONS);
+
+            if params.nlinfit == 1 & ~isempty(ver('stats')) % use the stats toolbox if you have it
+                [kAlphaPhi,resid,jacob] = nlinfit([xy w], [real(v); imag(v)],...
+                    'predictCSM',kAlphaPhiInit, OPTIONS);
+            elseif params.nlinfit == 0 | ~isempty(ver('stats')) % if you don't have the stats toolbox, or you don't want to use it
+                [kAlphaPhi,ssq,cnt, res, XY,A,resid] = LMFnlsq('res',kAlphaPhiInit,[xy w], [real(v); imag(v)], 'Display',0);
+                kAlphaPhi = kAlphaPhi';
+            end
+            
+            % check if outside acceptable limits
                         
             % first wrap alpha offset from seed to the range [-pi, pi)
             alphaOffsetWrapped = mod((kAlphaPhi(2)-seedAlpha)+pi,2*pi)-pi;
@@ -160,8 +169,15 @@ for i = 1:nKeep         % frequency loop
             end
 
             % get confidence limits
-            ex = nlparci(real(0*kAlphaPhi),resid,jacob); % get limits not bounds
-            ex = real(ex(:,2)); % get limit, not bounds
+            if params.nlinfit == 1 & ~isempty(ver('stats')) % use the stats toolbox if you have it
+                ex = nlparci(real(0*kAlphaPhi),resid,jacob); % get limits not bounds
+                ex = real(ex(:,2)); % get limit, not bounds
+             elseif params.nlinfit == 0 | ~isempty(ver('stats')) % if you don't have the stats toolbox, or you don't want to use it
+                DOF = size(v,1)*2-size(kAlphaPhi,2); % degrees of freedom
+                rmse = norm(resid) / sqrt(DOF);
+                %ex = sigma_p*tstat3( DOF, 1-0.025, 'inv' );
+                ex = rmse*sqrt(diag(inv(A)))*tstat3( DOF, 1-0.025, 'inv' );
+            end
         catch   % nlinfit failed with fatal errors, adding bogus
             kAlphaPhi = [nan nan nan];
             ex = kAlphaPhi;
