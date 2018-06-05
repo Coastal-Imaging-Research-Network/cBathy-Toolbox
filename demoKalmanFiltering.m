@@ -3,7 +3,16 @@
 clear
 cBInputPn = '102210cBathys/';     % a simple example day, stored locally
 fns = dir([cBInputPn,'*.mat']);
+
 H = 1;            % assume wave height is 1 m if absence of better data
+
+% Plot all of the cBathy results
+
+for i = 1: length(fns)
+   load([cBInputPn, filesep, fns(i).name])
+   plotBathyCollectKalman(bathy)
+   pause(2)
+end
 
 % Note that we will store the output in a different location for demo
 % purposes.  You would normally save the result back where you found the
