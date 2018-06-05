@@ -1,8 +1,8 @@
 %%% Site-specific Inputs
-params.stationStr = 'argus02a';
+params.stationStr = 'aerielle';
 params.dxm = 10;                    % analysis domain spacing in x
 params.dym = 25;                    % analysis domain spacing in y
-params.xyMinMax = [80 500 0 1000];   % min, max of x, then y
+params.xyMinMax = [80 500 500 700];   % min, max of x, then y
                                     % default to [] for cBathy to choose
 params.tideFunction = 'cBathyTide';  % tide level function for evel
 
@@ -12,8 +12,8 @@ params.minValsForBathyEst = 4;      % min num f-k pairs for bathy est.
 
 params.QTOL = 0.5;                  % reject skill below this in csm
 params.minLam = 10;                 % min normalized eigenvalue to proceed
-params.Lx = 3*params.dxm;           % tomographic domain smoothing
-params.Ly = 3*params.dym;           % 
+params.Lx = 2*params.dxm;           % tomographic domain smoothing
+params.Ly = 2*params.dym;           % 
 params.kappa0 = 2;                  % increase in smoothing at outer xm
 params.DECIMATE = 1;                % decimate pixels to reduce work load.
 params.maxNPix = 80;                % max num pixels per tile (decimate excess)
@@ -23,12 +23,12 @@ params.fB = [1/18: 1/50: 1/4];		% frequencies for analysis (~40 dof)
 params.nKeep = 4;                   % number of frequencies to keep
 
 % debugging options
-params.debug.production = 1;
+params.debug.production = 0;
 params.debug.DOPLOTSTACKANDPHASEMAPS = 1;  % top level debug of phase
 params.debug.DOSHOWPROGRESS = 1;		  % show progress of tiles
 params.debug.DOPLOTPHASETILE = 1;		  % observed and EOF results per pt
 params.debug.TRANSECTX = 200;		  % for plotStacksAndPhaseMaps
-params.debug.TRANSECTY = 900;		  % for plotStacksAndPhaseMaps
+params.debug.TRANSECTY = 600;		  % for plotStacksAndPhaseMaps
 
 % default offshore wave angle.  For search seeds.
 params.offshoreRadCCWFromx = 0;

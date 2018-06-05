@@ -31,13 +31,15 @@ function fDependent = ...
 % 09/01/11 - Holman rewrite to finally get rid of tiling and analyze a
 %   single location only
 % 12/05/11 - Holman major change to base on EOFs rather than direct from CSM
+% 5/19/2018  - Palmsten add option to use Richie Slocum's nonlinear fit
+% instead of nlinfit.m from Matlab Statistics and Machine Learning Toolbox
 
 %% %%  1. constants and parameters
-
 clear fDependent
 g=9.81;                         % 'g'
 minNeededPixels = 6;            % to avoid edge anomalies
 minLFraction = 0.5;             % min fract of wavelength to span
+maxAlphaOffset = pi/2;          % max radian distance from expected wave direction
 
 OPTIONS = statset('nlinfit');   % fit options
 OPTIONS.MaxIter = 50;
@@ -65,7 +67,7 @@ for i = 1: length(fB)
     C(:,:,i) = G(id,:)'*G(id,:) / length(id);   % pos 2nd leads 1st.
 end
 
-% create the coherence squared for all the potential frequence bands
+% create the coherence squared for all the potential frequency bands
 coh2 = squeeze(sum(sum(abs(C)))/(size(xyz,1)*(size(xyz,1)-1)));
 [~, coh2Sortid] = sort(coh2, 1, 'descend');  % sort by coh2
 fs = fB(coh2Sortid(1:nKeep));         % keep only the nKeep most coherent
@@ -105,7 +107,7 @@ for i = 1:nKeep         % frequency loop
     kmin = (2*pi*fs(i))^2/g; % smallest  and largest wavenumber
     kmax = 2*pi*fs(i)/sqrt(g*params.MINDEPTH); 
     LExpect = minLFraction*4*pi/(kmin+kmax);     % expected scale from mean k.
-    LB_UB = [kmin seedAlpha-pi/2;kmax seedAlpha+pi/2];
+    LB_UB = [kmin; kmax];
     OPTIONS.TolX = min([kmin/1000,pi/180/1000]); % min([kmin/100,pi/180/10]);
     statset(OPTIONS);
     warning off stats:nlinfit:IterationLimitExceeded
@@ -133,14 +135,26 @@ for i = 1:nKeep         % frequency loop
         try
             % do nonlinear fit on surviving data
             kAlphaPhiInit = findKAlphaPhiInit(v, xy, LB_UB, params);
-            [kAlphaPhi,resid,jacob] = nlinfit([xy w], [real(v); imag(v)],...
-                           'predictCSM',kAlphaPhiInit, OPTIONS);
+
+            if params.nlinfit == 1 & ~isempty(ver('stats')) % use the stats toolbox if you have it
+                [kAlphaPhi,resid,jacob] = nlinfit([xy w], [real(v); imag(v)],...
+                    'predictCSM',kAlphaPhiInit, OPTIONS);
+            elseif params.nlinfit == 0 | ~isempty(ver('stats')) % if you don't have the stats toolbox, or you don't want to use it
+                [kAlphaPhi,ssq,cnt, res, XY,A,resid] = LMFnlsq('res',kAlphaPhiInit,[xy w], [real(v); imag(v)], 'Display',0);
+                kAlphaPhi = kAlphaPhi';
+            end
             
             % check if outside acceptable limits
+                        
+            % first wrap alpha offset from seed to the range [-pi, pi)
+            alphaOffsetWrapped = mod((kAlphaPhi(2)-seedAlpha)+pi,2*pi)-pi;
+            % then check if k & alpha are outside acceptable limits
             if ((kAlphaPhi(1)<LB_UB(1,1)) || (kAlphaPhi(1)>LB_UB(2,1)) ...
-                    || (kAlphaPhi(2)<LB_UB(1,2)) || (kAlphaPhi(2)>LB_UB(2,2)))
+                    || abs(alphaOffsetWrapped) > maxAlphaOffset)
                 error;
             end
+            % if good, then wrap alpha to a standard range, [-pi, pi)
+            kAlphaPhi(2) = mod(kAlphaPhi(2)+pi,2*pi)-pi;
             
             % get predictions then skill
             vPred = predictCSM(kAlphaPhi, [xy abs(v)]);
@@ -155,8 +169,15 @@ for i = 1:nKeep         % frequency loop
             end
 
             % get confidence limits
-            ex = nlparci(real(0*kAlphaPhi),resid,jacob); % get limits not bounds
-            ex = real(ex(:,2)); % get limit, not bounds
+            if params.nlinfit == 1 & ~isempty(ver('stats')) % use the stats toolbox if you have it
+                ex = nlparci(real(0*kAlphaPhi),resid,jacob); % get limits not bounds
+                ex = real(ex(:,2)); % get limit, not bounds
+             elseif params.nlinfit == 0 | ~isempty(ver('stats')) % if you don't have the stats toolbox, or you don't want to use it
+                DOF = size(v,1)*2-size(kAlphaPhi,2); % degrees of freedom
+                rmse = norm(resid) / sqrt(DOF);
+                %ex = sigma_p*tstat3( DOF, 1-0.025, 'inv' );
+                ex = rmse*sqrt(diag(inv(A)))*tstat3( DOF, 1-0.025, 'inv' );
+            end
         catch   % nlinfit failed with fatal errors, adding bogus
             kAlphaPhi = [nan nan nan];
             ex = kAlphaPhi;
