@@ -12,22 +12,22 @@ function plotPhaseTile(xy, v, vPred)
 va = angle(v)*180/pi;
 vpa = angle(vPred)*180/pi;
 subplot(221)
-scatter3(xy(:,1), xy(:,2), va, [], va);
+scatter3(xy(:,1), xy(:,2), va, [], va, 'filled');
 view(2); caxis([-180 180]);  colorbar
 xlabel('x (m)'); ylabel('y (m)'); title('Observed phase')
 
 subplot(222)
-scatter3(xy(:,1), xy(:,2), abs(v), [], abs(v));
+scatter3(xy(:,1), xy(:,2), abs(v), [], abs(v), 'filled');
 view(2); colorbar
 xlabel('x (m)'); ylabel('y (m)'); title('Observed magnitude')
 
 subplot(223)
-scatter3(xy(:,1), xy(:,2), vpa, [], vpa);
+scatter3(xy(:,1), xy(:,2), vpa, [], vpa, 'filled');
 view(2); caxis([-180 180]); colorbar
 xlabel('x (m)'); ylabel('y (m)'); title('Predicted phase')
 
 subplot(224)
-scatter3(xy(:,1), xy(:,2), abs(vPred), [], abs(vPred));
+scatter3(xy(:,1), xy(:,2), abs(vPred), [], abs(vPred), 'filled');
 view(2); colorbar
 xlabel('x (m)'); ylabel('y (m)'); title('Predicted magnitude')
 
