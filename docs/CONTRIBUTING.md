@@ -51,7 +51,10 @@ Variable name convention
 please use explicit variable names so others can understand the variable name (don't be worried about variable name length)
 it's better to have a variable name like `significantWaveHeight` instead of `H`.  It is more clear. 
 
-establish variable name convention (camel humps? underscores? others? )
+Please see established coding conventions from the WIKI page that include variable name convention
+https://github.com/Coastal-Imaging-Research-Network/Forum-Wiki/wiki/Coding-Standards
+
+_establish variable name convention (camel humps? underscores? others?)_
 
 Changing Role
 -------------
