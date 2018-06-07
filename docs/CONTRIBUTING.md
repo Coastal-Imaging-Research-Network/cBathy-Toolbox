@@ -5,12 +5,14 @@ If you're here, that means you're considering contributing.
 That's exciting and we're glad you're here!  This is an open and welcoming community but to keep some semblance of order, 
 a few rules and suggestions for contributions.  :) 
 
-Please see the [CODE_OF_CONDUCT](../CODE_OF_CONDUCT) 
-other external links we should include here
+These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
+
+Please see the [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md) 
+>other external links we should include here
 
 Git Development Conventions:
 ----------------------------
-The rules for new feature enhancement is laid out below 
+The rules for new feature enhancement is laid out below:
 
 - The main branch for releases is `master`.  Each new release is marked with a tag for release.
 
@@ -18,15 +20,36 @@ The rules for new feature enhancement is laid out below
 
 - Each new feature is developed on a `[new feature]` branch. 
 
-if you're not comfortable developing in the main repository, you can try forking.  We do ask that when you've made developments
+- To contribute:
+  - create a topic branch (`[new feature]`) from where you want to base your work.
+  - This is usually the `development` branch.
+  - Only target `release` branches if you are certain your fix must be on that branch.
+  - Please avoid working directly on the `master` branch.
+  
+- Make commits of logical and atomic units.
+
+- Make sure your commit messages are in the proper format.  If they identify a established issue please identify in your commit
+
+- Make sure you have added the necessary tests for your changes or bug fixes.
+
+Submit a [pull request!](https://help.github.com/articles/creating-a-pull-request/)
+
+At this point you're waiting on us. We like to at least comment on pull requests within three to five business days (and, typically, one business day). We may suggest some changes or improvements or alternatives.
+
+Some things that will increase the chance that your pull request is accepted:
+
+- Write tests.
+- Follow our style guide.
+- Write a good commit message.
+ 
+**FORKS**
+if you're not comfortable developing in the main repository, you can try forking!  We do ask that when you've made developments
 that do still submit a pull request from your forked repository back to the main (upstream) repository. 
-
-Each new release (version) is merged after extensive testing proceedures listed below.  
-
 
 Testing Proceedure 
 ------------------
-Lay out testing proceedure here 
+Each new release (version) is merged after extensive testing proceedures listed below.  
+> Lay out testing proceedure here 
 (We would love for someone to develop automated testing environemnt)
 
 **Merging from `[new feature]` to `development` for enhancement** 
@@ -54,11 +77,11 @@ it's better to have a variable name like `significantWaveHeight` instead of `H`.
 Please see established coding conventions from the WIKI page that include variable name convention
 https://github.com/Coastal-Imaging-Research-Network/Forum-Wiki/wiki/Coding-Standards
 
-_establish variable name convention (camel humps? underscores? others?)_
+> _establish variable name convention (camel humps? underscores? others?)_
 
 Changing Role
 -------------
-Explain to users how to change role from _member_ to _contributor_ to _developer_
+> Explain to users how to change role from _member_ to _contributor_ to _developer_
 
 
 
