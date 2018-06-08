@@ -53,7 +53,7 @@ If a community member engages in unacceptable behavior, the community organizers
 
 ## 6. Reporting Guidelines
 
-If you are subject to or witness unacceptable behavior, or have any other concerns, please notify a community organizer as soon as possible. Katherine.L.Brodie@usace.army.mil [meg palmsten] [shawn harrison].
+If you are subject to or witness unacceptable behavior, or have any other concerns, please notify a community organizer as soon as possible. Katherine.L.Brodie@usace.army.mil [meg palmsten] srharrison@usgs.gov.
 
 
 
