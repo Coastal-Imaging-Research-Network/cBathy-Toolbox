@@ -81,7 +81,6 @@ https://github.com/Coastal-Imaging-Research-Network/Forum-Wiki/wiki/Coding-Stand
 
 Changing Role
 -------------
-> Explain to users how to change role from _member_ to _contributor_ to _developer_
+If you would like to change your role within the repository submit a request [here](https://goo.gl/forms/7VX5isIpHrV1jSlH2)
 
-
-
+please be sure to use a valid GitHub user name.
