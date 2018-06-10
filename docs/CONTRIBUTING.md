@@ -1,14 +1,14 @@
 cBathy Contribution Guidlines
 =============================
 
-If you're here, that means you're considering contributing. 
+If you're here, that means you're considering contributing to the development of [cBathy](https://doi.org/10.1002/jgrc.20199).
 That's exciting and we're glad you're here!  This is an open and welcoming community but to keep some semblance of order, 
 a few rules and suggestions for contributions.  :) 
 
 These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
 Please see the [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md) 
->other external links we should include here
+
 
 Git Development Conventions:
 ----------------------------
