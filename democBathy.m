@@ -2,7 +2,7 @@
 % results.  It uses a supplied example data set and does not make
 % assumptions about CIL conventions or databases.
 
-clear
+
 % Do a single cBathy analysis, returning the bathy structure (which you
 % would normally save somewhere) and displaying the results.  
 stationStr = 'argus02a';

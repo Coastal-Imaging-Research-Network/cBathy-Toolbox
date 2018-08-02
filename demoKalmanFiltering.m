@@ -1,6 +1,6 @@
 % demo Kalman filter process using a one day set of cBathy results
 
-clear
+
 cBInputPn = '102210cBathys/';     % a simple example day, stored locally
 fns = dir([cBInputPn,'*.mat']);
 
