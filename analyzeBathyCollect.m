@@ -1,8 +1,8 @@
-function bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy)
+function bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy, version)
 
 %%
 %
-%  bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy);
+%  bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy[, version]);
 %
 %  cBathy main analysis routine.  Input data from a time
 %  stack includes xyz, epoch and data as well as the initial fields
@@ -15,9 +15,21 @@ function bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy)
 %  These are usually set in an m-file (or text file) BWLiteSettings or
 %  something similar that is loaded in the wrapper routine
 %
+%  'version' is an optional minimum required version. fail if not met.
+%
 %  NOTE - we assume a coordinate system with x oriented offshore for
 %  simplicity.  If you use a different system, rotate your data to this
 %  system prior to analysis then un-rotate after.
+
+% test version
+    myVer = cBathyVersion();
+    if nargin == 6
+        if( myVer < version ) 
+            error(['This version: ' num2str(myVer) ' ...
+                required version: ' num2str(version) ...
+                ' FAIL!');
+        end
+    end
 
 %% prepare data for analysis
 
