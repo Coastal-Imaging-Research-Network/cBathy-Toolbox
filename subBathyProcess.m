@@ -1,20 +1,19 @@
-function [fDep, camUsed] = subBathyProcess( f, G, xyz, cam, xm, ym, params, kappa )
+function [fDep, camUsed] = subBathyProcess( f, G, xyz, cam, xm, ym, bathy )
 
 %% subBathyProcess -- extract region from full bathy stack, process
 %
-%  [fDep,camUsed] = subBathyProcess( f, G, xyz, cam, xm, ym, params, kappa )
+%  fDep = subBathyProcess( f, G, xyz, cam, xm, ym, bathy )
 %
 %  f, G, xyz, cam are the full arryms. 
 %  xm,ym is the desired analysis point.
-%  params is the parameter structure
-%  kappa is the cross-shore variable sample domain scaling factor for this
-%       position
+%  bathy is the building result structure
+%
 %
 
-%% first extract sub region
-
-[subG, subXYZ, camUsed] = spatialLimitBathy( G, xyz, cam, xm, ym, params, kappa );
-if( cBDebug( params, 'DOSHOWPROGRESS' ))
+%% first extract sub region.  Obsolete since tiles are now f-dependent size
+% [subG, subXYZ, camUsed] = spatialLimitBathy( G, xyz, cam, xm, ym, ...
+%                            bathy.params, bathy.kappa );
+if( cBDebug( bathy.params, 'DOSHOWPROGRESS' ))
     figure(21);
     foo = findobj('tag','pixDots'); % tidy up old locations
     if ~isempty(foo)
@@ -24,34 +23,22 @@ if( cBDebug( params, 'DOSHOWPROGRESS' ))
     if ~isempty(foo)
         delete(foo)
     end
-    hp1 = plot(subXYZ(:,1), subXYZ(:,2), 'r.', 'tag', 'pixDots');
-    hp2 = plot(xm, ym, 'g.', 'tag', 'xmDot');
-end
-
-
-%% anything to process?
-
-if isempty(subG)
-	fDep.k = nan(params.nKeep,1);
-	camUsed = -1;
-	return;
+   % hp1 = plot(subXYZ(:,1), subXYZ(:,2), 'r.', 'tag', 'pixDots');
+    hp2 = plot(xm, ym, 'g*', 'tag', 'xmDot');
 end
 
 %% now process!
 
-fDep = csmInvertKAlpha( f, subG, subXYZ, xm, ym, params, kappa );
+[fDep, camUsed] = csmInvertKAlpha( f, G, xyz, cam, xm, ym, bathy );
 
 %% how simple!
 
- 
-
-%
 %   Copyright (C) 2017  Coastal Imaging Research Network
 %                       and Oregon State University
 
-%    This program is free software: you can redistribute it and/or  
-%    modify it under the terms of the GNU General Public License as 
-%    published by the Free Software Foundation, version 3 of the 
+%    This program is free software: you can redistribute it and/or
+%    modify it under the terms of the GNU General Public License as
+%    published by the Free Software Foundation, version 3 of the
 %    License.
 
 %    This program is distributed in the hope that it will be useful,
