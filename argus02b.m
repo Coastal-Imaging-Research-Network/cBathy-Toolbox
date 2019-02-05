@@ -12,8 +12,6 @@ params.QTOL = 0.5;                  % reject skill below this in csm
 params.minLam = 10;                 % min normalized eigenvalue to proceed
 params.Lx = 3*params.dxm;           % tomographic domain smoothing
 params.Ly = 3*params.dym;           % 
-params.kappa0 = 2;                  % increase in smoothing at outer xm
-params.DECIMATE = 1;                % decimate pixels to reduce work load.
 params.maxNPix = 80;                % max num pixels per tile (decimate excess)
 params.minValsForBathyEst = 4; 
 
@@ -32,10 +30,6 @@ params.debug.TRANSECTY = 900;		  % for plotStacksAndPhaseMaps
 % default offshore wave angle.  For search seeds.
 params.offshoreRadCCWFromx = 0;
 
-% choose method for non-linear fit
-params.nlinfit = 0; % flag, 0 = use LMFnlsq.m to do non-linear fitting
-                    %       1 = use Matlab Statistics and computer vision
-                    %       toolbox nlinfit.m 
 %
 % Copyright by Oregon State University, 2011
 % Developed through collaborative effort of the Argus Users Group
