@@ -6,12 +6,10 @@ function bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy)
 %
 %  cBathy main analysis routine.  Input data from a time
 %  stack includes xyz, epoch and data as well as the initial fields
-%  of the bathy structure.  In v1.2, cam is now an input, which is a vector 
-%  containing a number for which camera each pixel stack came from. Returns an
+%  of the bathy structure.  Returns an
 %  augmented structure with new fields 'fDependent' that contains all
 %  the frequency dependent results and fCombined that contains the
-%  estimated bathymetry and errors. In v1.2, camUsed is also returned,
-%  which is a matrix identifying which camera data came from.
+%  estimated bathymetry and errors.
 %  bathy input is expected to have fields .epoch, .sName and .params.
 %  All of the relevant analysis parameters are contained in params.
 %  These are usually set in an m-file (or text file) BWLiteSettings or
@@ -22,17 +20,6 @@ function bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy)
 %  system prior to analysis then un-rotate after.
 
 %% prepare data for analysis
-% ensure that epoch a) has magnitudes typical of epoch times, versus
-% datenums, and b) is a column vector.  Note that epoch is sometimes a
-% matrix with times for each camera.  We usually take just the first
-% column.
-
-if epoch(1) < 10^8      % looks like a datenum, convert
-    epoch = matlab2Epoch(epoch);
-end
-if size(epoch,1)<size(epoch,2)     % looks rowlike
-    epoch = epoch(1,:)';            % take first row and transpose
-end
 
 [f, G, bathy] = prepBathyInput( xyz, epoch, data, bathy );
 
@@ -46,7 +33,7 @@ end
 %% now loop through all x's and y's
 
 if( cBDebug( bathy.params, 'DOSHOWPROGRESS' ))
-    figure(21); clf
+    figure(21);clf
     plot(xyz(:,1), xyz(:,2), '.'); axis equal; axis tight
     xlabel('x (m)'); ylabel('y (m)')
     title('Analysis Progress'); drawnow;
@@ -63,25 +50,25 @@ for xind = 1:length(bathy.xm)
     end;
     fDep = {};  %% local array of fDependent returns
     % kappa increases domain scale with cross-shore distance
-    kappa = 1 + (bathy.params.kappa0-1)*(bathy.xm(xind) - min(xyz(:,1)))/ ...
+    bathy.kappa = 1 + (bathy.params.kappa0-1)*(bathy.xm(xind) - min(xyz(:,1)))/ ...
         (max(xyz(:,1)) - min(xyz(:,1)));
     
     if( cBDebug( bathy.params, 'DOSHOWPROGRESS' ))
         for yind = 1:length(bathy.ym)
             [fDep{yind},camUsed(yind)] = subBathyProcess( f, G, xyz, cam, ...
-                bathy.xm(xind), bathy.ym(yind), bathy.params, kappa );
+                bathy.xm(xind), bathy.ym(yind), bathy );
         end
     else  
         parfor yind = 1:length(bathy.ym)
             [fDep{yind},camUsed(yind)] = subBathyProcess( f, G, xyz, cam, ...
-                bathy.xm(xind), bathy.ym(yind), bathy.params, kappa );
+                bathy.xm(xind), bathy.ym(yind), bathy );
         end  %% parfor yind
     end
     
     % stuff fDependent data back into bathy (outside parfor)
     for ind = 1:length(bathy.ym)
-
-	bathy.camUsed(ind,xind) = camUsed(ind);
+        
+        bathy.camUsed(ind,xind) = camUsed(ind);
         
         if( any( ~isnan( fDep{ind}.k) ) )  % not NaN, valid data.
             bathy.fDependent.fB(ind, xind, :) = fDep{ind}.fB(:);
@@ -114,8 +101,6 @@ bathy = bathyFromKAlpha(bathy);
 
 bathy = fixBathyTide(bathy);
 
-bathy.version = cBathyVersion();
-
 %if ((exist(bathy.params.tideFunction) == 2))   % existing function
 %    try
 %        foo = parseFilename(bathy.sName);
@@ -130,13 +115,12 @@ bathy.version = cBathyVersion();
 %    end
 %end
 
-%
 %   Copyright (C) 2017  Coastal Imaging Research Network
 %                       and Oregon State University
 
-%    This program is free software: you can redistribute it and/or  
-%    modify it under the terms of the GNU General Public License as 
-%    published by the Free Software Foundation, version 3 of the 
+%    This program is free software: you can redistribute it and/or
+%    modify it under the terms of the GNU General Public License as
+%    published by the Free Software Foundation, version 3 of the
 %    License.
 
 %    This program is distributed in the hope that it will be useful,
