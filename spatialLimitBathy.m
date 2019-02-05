@@ -1,25 +1,28 @@
-function [subG, subXYZ, camUsed] = spatialLimitBathy(G, xyz, cam, xm, ym, params, kappa )
+function [subG, subXY, camUsed] = ...
+        spatialLimitBathy(G, xyz, cam, xm, ym, Lx, Ly, maxNPix )
 
 %% spatialLimitBathy -- extract appropriate data from stack for 
-%   processing in the vicinity of xm, ym. 
+% [subG, subXYZ] = spatialLimitBathy( G, xyz, cam, xm, ym, Lx, Ly, maxNPix )
 %
-% [subG, subXYZ, camUsed] = spatialLimitBathy( G, xyz, cam, xm, ym, params, kappa )
-%
+%  Take the full array of stack locations in xyz, G(nF by Nxy) and find
+%  those in a tile of size Lx by Ly around and analysis point xm, ym,
+%  allowing there to be a max of maxNPix.
 
 % these are the indices of xy data that are within our box
-idUse = find( (xyz(:,1) >= xm-params.Lx*kappa) ...
-	 &    (xyz(:,1) <= xm+params.Lx*kappa) ...
-	 &    (xyz(:,2) >= ym-params.Ly*kappa) ...
-	 &    (xyz(:,2) <= ym+params.Ly*kappa) );
-
+idUse = find( (xyz(:,1) >= xm-Lx) ...
+         &    (xyz(:,1) <= xm+Lx) ...
+         &    (xyz(:,2) >= ym-Ly) ...
+         &    (xyz(:,2) <= ym+Ly) );
+ 
 % first decimate to maxNPix per tile, then drop minority cameras at seams.
 % Otherwise you end up limited only by maxNPix and the weightings get funny
 % for tiles with partial coverage.
 
-del = max(1, length(idUse)/params.maxNPix);
+del = max(1, length(idUse)/maxNPix);
 idUse = idUse(round(1: del: length(idUse)));
+
 subG = G(:,idUse);
-subXYZ = xyz(idUse,:);
+subXY = xyz(idUse,1:2);
 cams = cam(idUse);
 
 % if on seam, limit to the dominant camera bypixel count
@@ -37,35 +40,14 @@ if exist('N')
     camUsed = uniqueCams(pickCam);
 end
 subG = subG(:,pick);   % keep only those for the majority camera
-subXYZ = subXYZ(pick,:);
+subXY = subXY(pick,:);
 
-
-% problem: we've started getting subG's that came from missing data.
-%  they are Inf because of the normalization in prepBathyInput, and they
-%  mess up the EIG function in csmInvertKAlpha. Let's throw those columns
-%  away. We may have no data (handled in subBathyProcess, or too little
-%  data (handled in csmInvertKAlpha). 
-
-% first, do we still have any data? 
-
-if ~isempty(subG)
-    
-    [ugly, bad] = find(isnan(subG)); 
-    all = 1:size(subG,2);
-    good = setxor( all, unique(bad) );
-    
-    subG = subG(:,good);
-    subXYZ = subXYZ(good,:);
-    
-end
-
-%
 %   Copyright (C) 2017  Coastal Imaging Research Network
 %                       and Oregon State University
 
-%    This program is free software: you can redistribute it and/or  
-%    modify it under the terms of the GNU General Public License as 
-%    published by the Free Software Foundation, version 3 of the 
+%    This program is free software: you can redistribute it and/or
+%    modify it under the terms of the GNU General Public License as
+%    published by the Free Software Foundation, version 3 of the
 %    License.
 
 %    This program is distributed in the hope that it will be useful,
