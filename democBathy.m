@@ -7,17 +7,26 @@ clear
 % would normally save somewhere) and displaying the results.  
 stationStr = 'argus02a';
 stackName = 'testStack102210Duck';
+
+% $$ alternates for demo-ing debugging
+% stationStr = 'argus02b';
+% stackName = '100915ExampleStack';
+% edit argus02b to set production = 0
+% run analyzeSingleBathyRunNotCIL
+% try region [300 350 50 600 700 50]
+
 bathy = analyzeSingleBathyRunNotCIL(stackName, stationStr);
-bathy.params.debug.production=1;
+figure(1); 
 plotBathyCollect(bathy)
+cMap = colormap;
 
 % Now compare this result with a supplied example CRAB survey from three
 % days prior.
 CRABpn = '19-Oct-2010FRFGridded.mat';
 load(CRABpn)
-figure(1); clf
+figure(2); clf; colormap(cMap)
 subplot(121)
-imagesc(xm,ym,zi); grid on; caxis([-8 1])
+imagesc(xm,ym,-zi); grid on; caxis([0 8])
 axis xy; xlabel('x (m)'); ylabel('y (m)'); title(['CRAB, ' CRABpn])
 
 % remove results with HErr greater than a threshold and plot cBathy results
@@ -25,8 +34,8 @@ subplot(122)
 h2 = bathy.fCombined.h;
 threshErr = 1.0;
 h2(bathy.fCombined.hErr>threshErr) = nan;
-imagesc(bathy.xm,bathy.ym,-h2); grid on
-caxis([-8 1])
+imagesc(bathy.xm,bathy.ym,h2); grid on
+caxis([0 8])
 axis xy; xlabel('x (m)'); ylabel('y (m)'); 
 title(['cBathy, ' datestr(epoch2Matlab(str2num(bathy.epoch)))])
 

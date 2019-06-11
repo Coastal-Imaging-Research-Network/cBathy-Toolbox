@@ -37,9 +37,9 @@ for i = 1: floor(N/n)
     ky(i) = median(diff(phz(:))./diff(yp(:)));
 end
 ky = median(ky);
-kVec = kx+1i*ky;
+kVec = -kx-1i*ky;       % negate gradients to avoid to/from problem
 k = abs(kVec); 
-alpha = angle(kVec)-pi;     % switch by pi for 'coming from' angle
+alpha = angle(kVec);     
 phi = mean(rem(phase - kx*xy(:,1) - ky*xy(:,2), 2*pi));
 
 if ((k<LB_UB(1,1)) || (k>LB_UB(2,1)))    % if not in expected range
