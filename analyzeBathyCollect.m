@@ -52,9 +52,9 @@ if( cBDebug( bathy.params, 'DOSHOWPROGRESS' ))
     title('Analysis Progress'); drawnow;
     hold on
 end
-str = [bathy.sName(16:21) ', ' bathy.sName(36:39) ', ' bathy.sName([23 24 26 27])];
+%str = [bathy.sName(16:21) ', ' bathy.sName(36:39) ', ' bathy.sName([23 24 26 27])];
 if cBDebug( bathy.params )
-	hWait = waitbar(0, str);
+	hWait = waitbar(0);
 end;
 
 for xind = 1:length(bathy.xm)

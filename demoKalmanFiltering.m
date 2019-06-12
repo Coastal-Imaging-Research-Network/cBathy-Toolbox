@@ -35,10 +35,14 @@ end
 
 fns = dir([cBOutputPn,filesep,'*.mat']);
 
-for i = 1: length(fns)
+for i = 2: length(fns)
+   load([cBOutputPn, filesep, fns(i-1).name])
+   priorBathy = bathy;
    load([cBOutputPn, filesep, fns(i).name])
-   plotBathyCollectKalman(bathy)
-   pause(2)
+   figure(1); plotBathyCollectKalman(bathy)
+   figure(2); plotBathyKalmanStep(bathy,priorBathy)
+   foo = input('Hit CR to continue - ');
+   
 end
 %   Copyright (C) 2017  Coastal Imaging Research Network
 %                       and Oregon State University
