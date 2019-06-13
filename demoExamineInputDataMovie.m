@@ -22,7 +22,7 @@ Nx = length(x); Ny = length(y);
 % now remap each row (sample time) of the stack and display as a movie
 figure(2); clf; colormap(gray)
 for i = 1: size(data,1)
-    out = useInterpMap2(data(i,:)',map,wt); % first arg must be column
+    out = useInterpMap(data(i,:)',map,wt); % first arg must be column
     imagesc(x,y,reshape(out, Ny, Nx));
     axis image; axis xy
     drawnow;
