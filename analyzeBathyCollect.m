@@ -54,11 +54,10 @@ if( cBDebug( bathy.params, 'DOSHOWPROGRESS' ))
 end
 
 
-str = datestr(epoch/24/3600 +datenum(1970,1,1));
     
 
 if cBDebug( bathy.params )
-	hWait = waitbar(0, str);
+	hWait = waitbar(0, ['Cumulative Progress']);
 end;
 
 for xind = 1:length(bathy.xm)
