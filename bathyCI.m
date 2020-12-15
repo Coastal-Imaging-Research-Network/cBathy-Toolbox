@@ -24,7 +24,7 @@ alpha = 0.05;
 n = sum(w)/max(w);  % Holman kludge
 v = n-1;
 
-if flag == 1 && ~isempty(ver('stats')) % use the stats toolbox if you have it
+if flag == 1 % use the stats toolbox if you have it
     
     % Calculate covariance matrix
     [~,R] = qr(J,0);

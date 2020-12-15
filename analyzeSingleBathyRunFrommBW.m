@@ -1,22 +1,21 @@
-function version = cBathyVersion()
-
-%  version = cBathyVersion();
+function bathy = analyzeSingleBathyRunFrommBW(mBWPathname, n)
 %
-%  return the version number of cBathy, to be saved with the cBathy
-%  struct.
-
-% adds seam fix from OSU. Also new initialization function to improve
-% initial guesses.
-version = 2.0;
-
-
+%  bathy = analyzeSingleBathyRunFrommBW(mBWPathname, n)
 %
+%  simple run of analyzeBathyCollect for a single stackName.  Useful for
+%  debugging
+
+eval(n.station)
+bathy.epoch = n.time; bathy.sName = mBWPathname; bathy.params = params;
+load(mBWPathname)
+bathy = analyzeBathyCollect(XYZ, T(:), RAW, CAM, bathy);
+
 %   Copyright (C) 2017  Coastal Imaging Research Network
 %                       and Oregon State University
 
-%    This program is free software: you can redistribute it and/or  
-%    modify it under the terms of the GNU General Public License as 
-%    published by the Free Software Foundation, version 3 of the 
+%    This program is free software: you can redistribute it and/or
+%    modify it under the terms of the GNU General Public License as
+%    published by the Free Software Foundation, version 3 of the
 %    License.
 
 %    This program is distributed in the hope that it will be useful,
