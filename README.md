@@ -1,4 +1,4 @@
-# cBathy
+# cBathy-2.0
  README for cBathy
 
 When you type 'help {toolboxName}' where you insert your own toolbox
