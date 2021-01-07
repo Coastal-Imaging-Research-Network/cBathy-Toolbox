@@ -1,4 +1,4 @@
-function f = plotBathyCollect(bathy, figNum)
+function figNum = plotBathyCollect(bathy, figNum)
 
 %
 %   plotBathyCollect(bathy, {figNum})
@@ -9,16 +9,24 @@ function f = plotBathyCollect(bathy, figNum)
 
 % set up the figure
 if nargin<2
-    figNum = gcf;
+    figNum = figure;
+else
+    figure(figNum);
+    clf;
 end
-set(figNum,'RendererMode','manual','Renderer','painters');
-cmap = colormap( 'jet' );
-colormap( flipud( cmap ) );
+set(figNum,'RendererMode','manual','Renderer','painters',...
+    'Units','normalized',...
+    'Position',[0.2,0.2,0.6,0.6],...
+    'Colormap',flipud(jet));
+set(figNum,'Units','pixels');
+% cmap = colormap( 'jet' );
+% colormap( flipud( cmap ) );
 
 % plot the fCombined bathymetry
-clf;
-subplot(121);
-pcolor(bathy.xm, bathy.ym, bathy.fCombined.h);
+
+ax1=subplot(1,2,1);
+set(ax1,'FontSize',14,'FontWeight','bold');
+pcolor(ax1,bathy.xm, bathy.ym, bathy.fCombined.h);
 shading flat
 caxis([0 10]);
 set(gca, 'ydir', 'nor');
@@ -26,15 +34,19 @@ axis equal;
 axis tight;
 xlabel('x (m)');
 ylabel('y (m)');
-titstr = datestr( epoch2Matlab(str2num(bathy.epoch)), ...
-    'mmm dd yyyy, HH:MM' );
-title( titstr );
+titstr=datestr(datenum('19700101','yyyymmdd')+str2double(bathy.epoch)/24/3600,...
+    'mmm dd yyyy, HH:MM');
+% titstr = datestr( epoch2Matlab(str2num(bathy.epoch)), ...
+%     'mmm dd yyyy, HH:MM' );
+title( titstr ,'FontSize',14,'FontWeight','bold');
 h=colorbar('peer', gca);
 set(h, 'ydir', 'rev');
 set(get(h,'title'),'string', 'h (m)')
 
-subplot(122);
-pcolor(bathy.xm, bathy.ym, -bathy.fCombined.hErr);
+ax2=subplot(1,2,2);
+set(ax2,'FontSize',14,'FontWeight','bold');
+
+pcolor(ax2,bathy.xm, bathy.ym, -bathy.fCombined.hErr);
 shading flat
 caxis([-2 0]);
 set(gca, 'ydir', 'nor');
@@ -44,12 +56,12 @@ xlabel('x (m)');
 ylabel('y (m)');
 h=colorbar('peer', gca);
 set( h, 'ydir', 'rev' ); 
-foo = get( h, 'yticklabel' );
-foo = cellstr(foo);
-for ll=1:length(foo)
-foo{ll} = num2str( abs(str2num(foo{ll})), '%.1f' );
+tickLabels = get( h, 'yticklabel' );
+tickLabels = cellstr(tickLabels);
+for ll=1:length(tickLabels)
+tickLabels{ll} = num2str( abs(str2double(tickLabels{ll})), '%.1f' );
 end
-set( h, 'yticklabel', foo );
+set( h, 'yticklabel', tickLabels );
 set( get(h,'title'), 'string', 'hErr (m)' );
 
 return

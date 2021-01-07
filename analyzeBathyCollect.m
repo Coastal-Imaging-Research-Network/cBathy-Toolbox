@@ -75,6 +75,7 @@ end
 for xind = 1:length(bathy.xm)
 %    if cBDebug( bathy.params )
 	    waitbar(xind/length(bathy.xm), hWait)
+        
 %    end
     fDep = cell(1,length(bathy.ym));  %% Initialization of fDep yb D.S.
     camUsed = zeros(length(bathy.ym),1);
@@ -85,13 +86,12 @@ for xind = 1:length(bathy.xm)
                 bathy.xm(xind), bathy.ym(yind), bathy );
         end
     else
-        xm_vals = bathy.xm(xind);
+        xmValues = bathy.xm(xind);
         xy = xyz(:,1:2);
-        ym_vals = bathy.ym;
+        ymValues = bathy.ym;
         parfor yind = 1:length(bathy.ym)
-            %             fprintf('Yind %d\n',yind)
             [fDep{yind},camUsed(yind)] = csmInvertKAlpha( f, G, xy, cam, ...
-                xm_vals, ym_vals(yind), bathy );
+                xmValues, ymValues(yind), bathy );
         end  %% parfor yind
     end
     
