@@ -1,6 +1,7 @@
 function bathy = analyzeSingleBathyRunFrommBW(mBWPathname, n)
 % To run this code, the second input should be a structure with the
-% station (identifyinf the m file with input parameters) and an epoch time.
+% station (name of the m file with input parameters, e.g. argus02b)
+% and an epoch time.
 % The first input should be the input MAT file.
 % Output will be the bathy data.
 
