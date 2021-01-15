@@ -1,7 +1,7 @@
 function bathy = bathyFromKAlpha(bathy)
 %
 %  bathy = bathyFromKAlpha(bathy);
-% 
+%
 % pahse II in cBathy to take multi-frequency estimates of bathymetry
 % and find a best solution for each tomographic location using skill
 % and error weightings
@@ -38,24 +38,24 @@ Y = repmat(y', [1, size(x,2), nFreqs]);
 for ix = 1: length(x)
     for iy = 1: length(y)
         kappa = 1 + (bathy.params.kappa0-1)*(x(ix) - xMin)/ ...
-                (xMax - xMin);
+            (xMax - xMin);
         % find range-based weights, Wmi to contribute to total weight
         dxmi = X - x(ix);
         dymi = Y - y(iy);
         r = sqrt((dxmi/(params.Lx*kappa)).^2 + (dymi/(params.Ly*kappa)).^2);
         Wmi = interp1(ri,ai,r,'linear*',0);  % sample normalized weights
-
+        
         id = find((Wmi > 0) & ...
-                  (bathy.fDependent.skill>params.QTOL) & ...
-                   (~isnan(bathy.fDependent.hTemp)));
-        if(length(id)>=params.minValsForBathyEst)    
+            (bathy.fDependent.skill>params.QTOL) & ...
+            (~isnan(bathy.fDependent.hTemp)));
+        if(length(id)>=params.minValsForBathyEst)
             f = [bathy.fDependent.fB(id)];
             k = [bathy.fDependent.k(id)];
             kErr = [bathy.fDependent.kErr(id)];
             s = [bathy.fDependent.skill(id)];
             l = [bathy.fDependent.lam1(id)];
             hTemp = [bathy.fDependent.hTemp(id)];
-%% find dispersion sensitivity
+            %% find dispersion sensitivity
             gamma = 4*pi*pi*f.*f./(g.*k);
             wMu = 1./interp1(gammaiBar, mu, gamma);
             w = Wmi(id).*wMu.*l.*s./(eps+k);    % weights depend on skill and variance (lam)
@@ -63,23 +63,20 @@ for ix = 1: length(x)
             
             % nlinfit *** may be replaced with conditional statement that
             % follows
-%             [h,resid,jacob] =nlinfit([f, w], k.*w, ...
-%                 'kInvertDepthModel',hInit, OPTIONS);
-%             leverage = jacob.^2./sum(jacob.^2);     % used for fBar
             
-                        if params.nlinfit == 1 % use the stats toolbox if you have it
-                            [h,resid,jacob] =nlinfit([f, w], k.*w, ...
-                                'kInvertDepthModel',hInit, OPTIONS);
-                            leverage = jacob.^2./sum(jacob.^2);     % used for fBar
-                        elseif params.nlinfit == 0 % if you don't have the stats toolbox, or you don't want to use it
-                            [h,~,~, ~, ~,A,resid] = LMFnlsq('res2',hInit,[f, w], k.*w,'Display',0);
-                            leverage = zeros(size(f));
-                        end
+            if params.nlinfit == 1 % use the stats toolbox if you have it
+                [h,resid,jacob] =nlinfit([f, w], k.*w, ...
+                    'kInvertDepthModel',hInit, OPTIONS);
+                leverage = jacob.^2./sum(jacob.^2);     % used for fBar
+            elseif params.nlinfit == 0 % if you don't have the stats toolbox, or you don't want to use it
+                [h,~,~, ~, ~,A,resid] = LMFnlsq('res2',hInit,[f, w], k.*w,'Display',0);
+                leverage = zeros(size(f));
+            end
             if (~isnan(h))      % some value returned
                 if params.nlinfit == 1 % use the stats toolbox if you have it
                     hErr = bathyCI(resid,jacob, w,1);		 % get limits not bounds
                 elseif params.nlinfit == 0 % if you don't have the stats toolbox, or you don't want to use it
-
+                    
                     hErr = bathyCI(resid,A, w,0);		 % get limits not bounds
                 end
                 kModel = kInvertDepthModel(h, [f, w]);
@@ -99,9 +96,9 @@ end	% ix
 %   Copyright (C) 2017  Coastal Imaging Research Network
 %                       and Oregon State University
 
-%    This program is free software: you can redistribute it and/or  
-%    modify it under the terms of the GNU General Public License as 
-%    published by the Free Software Foundation, version 3 of the 
+%    This program is free software: you can redistribute it and/or
+%    modify it under the terms of the GNU General Public License as
+%    published by the Free Software Foundation, version 3 of the
 %    License.
 
 %    This program is distributed in the hope that it will be useful,

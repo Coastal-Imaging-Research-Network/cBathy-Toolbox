@@ -1,9 +1,8 @@
 function bathy = analyzeSingleBathyRunFrommBW(mBWPathname, n)
-%
-%  bathy = analyzeSingleBathyRunFrommBW(mBWPathname, n)
-%
-%  simple run of analyzeBathyCollect for a single stackName.  Useful for
-%  debugging
+% To run this code, the second input should be a structure with the
+% station (identifyinf the m file with input parameters) and an epoch time.
+% The first input should be the input MAT file.
+% Output will be the bathy data.
 
 eval(n.station)
 bathy.epoch = n.time; bathy.sName = mBWPathname; bathy.params = params;
