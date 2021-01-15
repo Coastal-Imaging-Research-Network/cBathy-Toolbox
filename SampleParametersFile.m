@@ -1,5 +1,15 @@
 %%% Sample Inputs file. This file should be used as a template for the
 %%% parameters used in cBathy.
+%%%
+%%% *** Important Note on Usage: *** 
+%%% Before using the sample parameters, copy this file to a file named
+%%% after the station. The name of this file should be the name of the
+%%% station being processed, and it will appear in some of the output
+%%% products.
+%%% When you call analyzeBathyCollect, you will need to input the name of
+%%% the parameters file which will be evaluated to load these parameters
+%%% and may appear in some of the output products in titles/axis labels and
+%%% file names. 
 
 %%% Site-specific Inputs
 params.stationStr = 'SampleParametersFile';
@@ -7,11 +17,11 @@ params.dxm = 10;                    % analysis domain spacing in x
 params.dym = 25;                    % analysis domain spacing in y
 params.xyMinMax = [80 800 -500 1500];   % min, max of x, then y
                                     % default to [] for cBathy to choose
-params.tideFunction = 'cBathyTide';  % tide level function for evel
+params.tideFunction = 'cBathyTide';  % tide level function for eval
 
 %%%%%%%   Power user settings from here down   %%%%%%%
 params.MINDEPTH = 0.25;             % for initialization and final QC
-params.QTOL = 0.35;                 % reject skill below this in csm
+params.QTOL = 0.5;                  % reject skill below this in csm
 params.minLam = 10;                 % min normalized eigenvalue to proceed
 params.Lx = 3*params.dxm;           % tomographic domain smoothing
 params.Ly = 3*params.dym;           % 
@@ -37,7 +47,7 @@ params.debug.TRANSECTY = 900;		  % for plotStacksAndPhaseMaps
 % default offshore wave angle.  For search seeds.
 params.offshoreRadCCWFromx = 0;
 
-params.nlinfit = 1;
+params.nlinfit = 1; % flag, 0 = use LMFnlsq.m to do non-linear fitting
 
 
 %

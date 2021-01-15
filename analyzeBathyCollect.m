@@ -1,5 +1,4 @@
 function bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy)
-
 %%
 %
 %  bathy = analyzeBathyCollect(xyz, epoch, data, cam, bathy);
@@ -68,9 +67,13 @@ end
 % end
 
 % turn off warnings
-    warning('off', 'stats:nlinfit:IterationLimitExceeded')
-    warning('off', 'stats:nlinfit:RankDeficient')
+warning('off', 'stats:nlinfit:IterationLimitExceeded')
+warning('off', 'stats:nlinfit:RankDeficient')
 
+% % check if the points 
+% dx_min = min(diff(xm));
+% dy_min = min(diff(ym));
+% d_res = min(dx_min,dy_min);
 
 for xind = 1:length(bathy.xm)
 %    if cBDebug( bathy.params )
@@ -89,6 +92,7 @@ for xind = 1:length(bathy.xm)
         xmValues = bathy.xm(xind);
         xy = xyz(:,1:2);
         ymValues = bathy.ym;
+        fprintf('XIND %d of  %d\n',xind,length(bathy.xm));
         parfor yind = 1:length(bathy.ym)
             [fDep{yind},camUsed(yind)] = csmInvertKAlpha( f, G, xy, cam, ...
                 xmValues, ymValues(yind), bathy );
@@ -156,4 +160,3 @@ bathy.cpuTime = toc;
 %
 %key cBathy
 %
-

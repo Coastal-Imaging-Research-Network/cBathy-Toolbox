@@ -61,6 +61,7 @@ tickLabels = cellstr(tickLabels);
 for ll=1:length(tickLabels)
 tickLabels{ll} = num2str( abs(str2double(tickLabels{ll})), '%.1f' );
 end
+drawnow
 set( h, 'yticklabel', tickLabels );
 set( get(h,'title'), 'string', 'hErr (m)' );
 
@@ -90,4 +91,3 @@ return
 %
 %key cBathy
 %
-

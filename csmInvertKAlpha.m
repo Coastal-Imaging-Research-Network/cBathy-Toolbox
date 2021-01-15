@@ -125,8 +125,18 @@ for i = 1:length(fs)         % frequency loop
                 OPTIONS.TolX = min([kmin/100, pi/180/10]);  % change from /1000 to /100
                 statset(OPTIONS);
                 callCount = 0;      % count calls to predictCSM
-                [kAlpha,resid,jacob] = nlinfit([xy w], [real(v); imag(v)],...
-                               'predictCSM',kAlphaInit, OPTIONS);
+%                 [kAlpha,resid,jacob] = nlinfit([xy w], [real(v); imag(v)],...
+%                     'predictCSM',kAlphaInit, OPTIONS);
+                
+                if  bathy.params.nlinfit == 1 && ~isempty(ver('stats')) % use the stats toolbox if you have it
+                    [kAlpha,resid,jacob] = nlinfit([xy w], [real(v); imag(v)],...
+                        'predictCSM',kAlphaInit, OPTIONS);
+                elseif  bathy.params.nlinfit == 0 || ~isempty(ver('stats')) % if you don't have the stats toolbox, or you don't want to use it
+                    [kAlpha,~,~, ~, ~,A,resid] = LMFnlsq('res',kAlphaInit,...
+                        [xy w], [real(v); imag(v)], 'Display',0);
+                    kAlpha = kAlpha';
+                end
+                           
                 nCalls = callCount;     % record number of f-calls
 
                 % check if outside acceptable limits
@@ -148,9 +158,20 @@ for i = 1:length(fs)         % frequency loop
                     fprintf('frequency %d of %d, normalized lambda %.1f\n  ', ...
                                 i, bathy.params.nKeep,lam1Norm)
                 end
+                
                 % get confidence limits
-                ex = nlparci(real(0*kAlpha),resid,jacob); % get limits not bounds
-                ex = real(ex(:,2)); % get limit, not bounds
+                if bathy.params.nlinfit == 1 && ~isempty(ver('stats')) % use the stats toolbox if you have it
+                    ex = nlparci(real(0*kAlpha),resid,jacob); % get limits not bounds
+                    ex = real(ex(:,2)); % get limit, not bounds
+                elseif bathy.params.nlinfit == 0 || ~isempty(ver('stats')) % if you don't have the stats toolbox, or you don't want to use it
+                    DOF = size(v,1)*2-size(kAlpha,2); % degrees of freedom
+                    rmse = norm(resid) / sqrt(DOF);
+                    %ex = sigma_p*tstat3( DOF, 1-0.025, 'inv' );
+                    ex = rmse*sqrt(diag(inv(A)))*tstat3( DOF, 1-0.025, 'inv' );
+                end
+                
+                
+                
             catch   % nlinfit failed with fatal errors, adding bogus
                 kAlpha = [nan nan];
                 ex = kAlpha;

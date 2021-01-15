@@ -34,7 +34,9 @@ params.debug.TRANSECTY = 900;		  % for plotStacksAndPhaseMaps
 % default offshore wave angle.  For search seeds.
 params.offshoreRadCCWFromx = 0;
 
-params.nlinfit = 1;
+params.nlinfit = 1; % flag, 0 = use LMFnlsq.m to do non-linear fitting
+
+
 
 
 %

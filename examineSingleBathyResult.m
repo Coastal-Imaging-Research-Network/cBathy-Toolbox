@@ -18,7 +18,8 @@ for i = 1: length(fBList)
     empty = nan(small);
     [r,c,d] = ind2sub(fullSize,id);
     idSmall = sub2ind(small,r,c);
-    str = datestr(epoch2Matlab(str2num(bathy.epoch)), 21);
+    str=datestr(datenum('19700101','yyyymmdd')+str2double(bathy.epoch)/24/3600,21);
+    %str = datestr(epoch2Matlab(str2num(bathy.epoch)), 21);
     str = [str ', f = ' num2str(f,'%.3f') ' Hz'];
     % now plot figs
     figure(2); clf

@@ -63,18 +63,18 @@ for ix = 1: length(x)
             
             % nlinfit *** may be replaced with conditional statement that
             % follows
-            [h,resid,jacob] =nlinfit([f, w], k.*w, ...
-                'kInvertDepthModel',hInit, OPTIONS);
-            leverage = jacob.^2./sum(jacob.^2);     % used for fBar
+%             [h,resid,jacob] =nlinfit([f, w], k.*w, ...
+%                 'kInvertDepthModel',hInit, OPTIONS);
+%             leverage = jacob.^2./sum(jacob.^2);     % used for fBar
             
-            %             if params.nlinfit == 1 % use the stats toolbox if you have it
-            %                 [h,resid,jacob] =nlinfit([f, w], k.*w, ...
-            %                     'kInvertDepthModel',hInit, OPTIONS);
-            %                 leverage = jacob.^2./sum(jacob.^2);     % used for fBar
-            %             elseif params.nlinfit == 0 % if you don't have the stats toolbox, or you don't want to use it
-            %                 [h,~,~, ~, ~,A,resid] = LMFnlsq('res2',hInit,[f, w], k.*w,'Display',0);
-            %                 leverage = zeros(size(f));
-            %             end
+                        if params.nlinfit == 1 % use the stats toolbox if you have it
+                            [h,resid,jacob] =nlinfit([f, w], k.*w, ...
+                                'kInvertDepthModel',hInit, OPTIONS);
+                            leverage = jacob.^2./sum(jacob.^2);     % used for fBar
+                        elseif params.nlinfit == 0 % if you don't have the stats toolbox, or you don't want to use it
+                            [h,~,~, ~, ~,A,resid] = LMFnlsq('res2',hInit,[f, w], k.*w,'Display',0);
+                            leverage = zeros(size(f));
+                        end
             if (~isnan(h))      % some value returned
                 if params.nlinfit == 1 % use the stats toolbox if you have it
                     hErr = bathyCI(resid,jacob, w,1);		 % get limits not bounds
