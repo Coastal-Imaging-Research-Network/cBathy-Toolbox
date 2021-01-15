@@ -5,6 +5,8 @@ When you type 'help {toolboxName}' where you insert your own toolbox
 name, will give the Contents of the toolbox.
  
 The outline below shows the order of how analysis routines are called.
+
+Note: Version 2.0 requires Matlab 2016a or newer.
  
 This toolbox has been extracted from the full CIL version and SHOULD work on a standalone basis.  In doing this, a number of checks have been removed since these depend on CIL databases and standards.
  
