@@ -80,23 +80,4 @@ Logicial Outline for analyzeBathyCollect version 2
 - no tiles, each x,y done independently
 - ie., csmInvertKAlpha does one x,y at a time, returns fDependent and camera ID used for each position
 
-```
-analyzeBathyCollect
-input:  xyz, epoch, data  (data from stacks), camera ID, bathy (with params)
-output: bathy  (final results)
-
-prepBathyInput( xyz, epoch, data, bathy )
-output: f, G, bathy with empty data, allx, ally
-
-parfor loop on allx, ally
-
-csmInvertKAlpha( f, subG, subxyz, camera ID, ax, ay, params )
-output: fDependent
-
-stuff fDependent back into main bathy
-
-end parfor
-
-convert bathy fDependent to final output
-```
-
+![alt text](https://github.com/Coastal-Imaging-Research-Network/cBathy-Toolbox/blob/version-2.0/manual/versionOrgCharts.png?raw=true)
