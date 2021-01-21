@@ -1,24 +1,31 @@
 function figNum = plotBathyCollect(bathy, figNum)
-
-%
-%   plotBathyCollect(bathy, {figNum})
-%
-%  plots a bathymetry result showing the bathymetry and error.  Allows
+%  Function to plot the bathymetry and error from cBathy.  Allows
 %  optional choice of figure number, otherwise defaults to the current
 %  figure.
+% Usage: 
+% To make the plot in a new figure 
+%    plotBathyCollect(bathy)
+% or to plot in an existing figure or with a set handle:
+%    plotBathyCollect(bathy, figNum)
+%
+% The user can opt to plot the image in the current figure:
+%  plotBathyCollect(bathy, gcf);
+% Or the user can select a specific figure:
+% E.g.  plotBathyCollect(bathy, 2);
+%
 
 % set up the figure
 if nargin<2
     figNum = figure;
+    set(figNum,'RendererMode','manual','Renderer','painters',...
+        'Units','normalized',...
+        'Position',[0.2,0.2,0.6,0.6],...
+        'Colormap',flipud(jet));
+    set(figNum,'Units','pixels');
 else
     figure(figNum);
     clf;
 end
-set(figNum,'RendererMode','manual','Renderer','painters',...
-    'Units','normalized',...
-    'Position',[0.2,0.2,0.6,0.6],...
-    'Colormap',flipud(jet));
-set(figNum,'Units','pixels');
 % cmap = colormap( 'jet' );
 % colormap( flipud( cmap ) );
 

@@ -128,10 +128,10 @@ for i = 1:length(fs)         % frequency loop
 %                 [kAlpha,resid,jacob] = nlinfit([xy w], [real(v); imag(v)],...
 %                     'predictCSM',kAlphaInit, OPTIONS);
                 
-                if  bathy.params.nlinfit == 1 && ~isempty(ver('stats')) % use the stats toolbox if you have it
+                if  bathy.params.nlinfit == 1 % use nlinfit
                     [kAlpha,resid,jacob] = nlinfit([xy w], [real(v); imag(v)],...
                         'predictCSM',kAlphaInit, OPTIONS);
-                elseif  bathy.params.nlinfit == 0 || ~isempty(ver('stats')) % if you don't have the stats toolbox, or you don't want to use it
+                elseif  bathy.params.nlinfit == 0 % if stats toolbox is no available, set the nlinfit flag to 0
                     [kAlpha,~,~, ~, ~,A,resid] = LMFnlsq('res',kAlphaInit,...
                         [xy w], [real(v); imag(v)], 'Display',0);
                     kAlpha = kAlpha';
@@ -160,10 +160,10 @@ for i = 1:length(fs)         % frequency loop
                 end
                 
                 % get confidence limits
-                if bathy.params.nlinfit == 1 && ~isempty(ver('stats')) % use the stats toolbox if you have it
+                if bathy.params.nlinfit == 1 % use the stats toolbox 
                     ex = nlparci(real(0*kAlpha),resid,jacob); % get limits not bounds
                     ex = real(ex(:,2)); % get limit, not bounds
-                elseif bathy.params.nlinfit == 0 || ~isempty(ver('stats')) % if you don't have the stats toolbox, or you don't want to use it
+                elseif bathy.params.nlinfit == 0 % no-stats toolbox
                     DOF = size(v,1)*2-size(kAlpha,2); % degrees of freedom
                     rmse = norm(resid) / sqrt(DOF);
                     %ex = sigma_p*tstat3( DOF, 1-0.025, 'inv' );

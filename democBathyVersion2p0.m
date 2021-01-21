@@ -35,6 +35,7 @@ bathy.epoch = num2str(T(1));
 bathy.sName = dataStackName;
 bathy.params = params;
 
+
 bathy = analyzeBathyCollect(XYZ, T, RAW, CAM, bathy);
 
 outFileName = fullfile(outDirectory,outName);
