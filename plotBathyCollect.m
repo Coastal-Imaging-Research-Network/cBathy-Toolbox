@@ -1,10 +1,13 @@
-function plotBathyCollect(bathy, figNum)
-%
-%   plotBathyCollect(bathy, {figNum})
-%
-%  plots a bathymetry result showing the bathymetry and error.  Allows
+function figNum = plotBathyCollect(bathy, figNum)
+%  Function to plot the bathymetry and error from cBathy.  Allows
 %  optional choice of figure number, otherwise defaults to the current
 %  figure.
+% Usage: 
+% To make the plot in the current figure 
+%    plotBathyCollect(bathy)
+% or to plot in an existing figure or with a set handle:
+%    plotBathyCollect(bathy, figNum)
+%
 
 % set up the figure
 if nargin<2
