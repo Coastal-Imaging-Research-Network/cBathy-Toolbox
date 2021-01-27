@@ -43,7 +43,7 @@ for ix = 1: length(x)
         dxmi = X - x(ix);
         dymi = Y - y(iy);
         r = sqrt((dxmi/(params.Lx*kappa)).^2 + (dymi/(params.Ly*kappa)).^2);
-        Wmi = interp1(ri,ai,r,'linear*',0);  % sample normalized weights
+        Wmi = interp1(ri,ai,r,'linear',0);  % sample normalized weights
         
         id = find((Wmi > 0) & ...
             (bathy.fDependent.skill>params.QTOL) & ...

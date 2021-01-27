@@ -41,8 +41,16 @@ outFileName = fullfile(outDirectory,outName);
 save(outFileName,'bathy');
 
 fprintf('Output files saved to %s\n',outDirectory);
+% 
+% figNum=figure('RendererMode','manual','Renderer','painters',...
+%     'Units','normalized',...
+%     'Position',[0.3,0.3,0.4,0.4],...
+%     'Colormap',flipud(jet));
+% set(figNum,'Units','pixels');
+figNum=figure('RendererMode','manual','Renderer','painters',...
+    'Colormap',flipud(jet));
 
-plotBathyCollect(bathy);
+plotBathyCollect(bathy,figNum);
 
 return
 
