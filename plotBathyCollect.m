@@ -1,4 +1,4 @@
-function figNum = plotBathyCollect(bathy, figNum)
+function plotBathyCollect(bathy, figNum)
 %  Function to plot the bathymetry and error from cBathy.  Allows
 %  optional choice of figure number, otherwise defaults to the current
 %  figure.
