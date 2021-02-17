@@ -36,7 +36,7 @@ titstr=datestr(datenum('19700101','yyyymmdd')+str2double(bathy.epoch)/24/3600,..
 
 title( titstr );
 h=colorbar('peer', gca);
-set(h, 'ydir', 'rev');
+% set(h, 'ydir', 'rev');
 set(get(h,'title'),'string', 'h (m)')
 
 ax2=subplot(1,2,2);
@@ -50,7 +50,7 @@ axis tight;
 xlabel('x (m)');
 ylabel('y (m)');
 h=colorbar('peer', gca);
-set( h, 'ydir', 'rev' );
+% set( h, 'ydir', 'rev' );
 tickLabels = get( h, 'yticklabel' );
 tickLabels = cellstr(tickLabels);
 for ll=1:length(tickLabels)
