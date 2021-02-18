@@ -50,7 +50,7 @@ axis tight;
 xlabel('x (m)');
 ylabel('y (m)');
 h=colorbar('peer', gca);
-% set( h, 'ydir', 'rev' );
+set( h, 'ydir', 'rev' );
 tickLabels = get( h, 'yticklabel' );
 tickLabels = cellstr(tickLabels);
 for ll=1:length(tickLabels)
