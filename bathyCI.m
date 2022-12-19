@@ -1,4 +1,4 @@
-function bathyErr = bathyCI(resid,J,w)
+function bathyErr = bathyCI(resid,J,w,flag)
 % 
 %   bathyErr = bathyCI(resid,J,w)
 %
@@ -9,8 +9,10 @@ function bathyErr = bathyCI(resid,J,w)
 %
 %  Inputs:
 %   resid   - Nx1 vector or prediction residuals from k-estimates
-%   J       - Jacobian (both these are from nlinfit)
+%   J       - if flag = 1,Jacobian (both these are from nlinfit)
+%           - if flag = 0, expected input is J'*J, from LMFnlsq.m
 %   w       - weights used in weighted nlinfit
+%   flag    - 1 = use statistics toolbox, 0 = don't use stats toolbox
 %  Output:
 %   bathyErr - 95% confidence interval on depth estimate.
 %
@@ -22,18 +24,26 @@ alpha = 0.05;
 n = sum(w)/max(w);  % Holman kludge
 v = n-1;
 
-% Calculate covariance matrix
-[~,R] = qr(J,0);
-Rinv = R\eye(size(R));
-diag_info = sum(Rinv.*Rinv,2);
-
-rmse = norm(resid) / sqrt(v);
-se = sqrt(diag_info) * rmse;
-
-% Calculate bathyError from t-stats.
-bathyErr = se * tinv(1-alpha/2,v);
-
-
+if flag == 1 % use the stats toolbox if you have it
+    
+    % Calculate covariance matrix
+    [~,R] = qr(J,0);
+    Rinv = R\eye(size(R));
+    diagInfo = sum(Rinv.*Rinv,2);
+    
+    rmse = norm(resid) / sqrt(v);
+    se = sqrt(diagInfo) * rmse;
+    
+    % Calculate bathyError from t-stats.
+    bathyErr = se * tinv(1-alpha/2,v);
+    
+elseif flag || ~isempty(ver('stats')) % if you don't have the stats toolbox, or you don't want to use it
+    
+    rmse = norm(resid) / sqrt(v);
+    se = rmse*sqrt(diag(inv(J)));
+    bathyErr = se*tstat3( v, 1-alpha/2, 'inv' );
+    
+end
 %
 %   Copyright (C) 2017  Coastal Imaging Research Network
 %                       and Oregon State University
