@@ -1,16 +1,11 @@
-% cBathy-Toolbox-1.3 - Estimate k-alpha and bathy from pixel data
+% cBathy-Toolbox-2.0 - Estimate k-alpha and bathy from pixel data
 %
-% Batch Routines
-%   cBathyBatch         - executes cBathy for a range of days
+% Primary Analysis Routines
+%   analyzeBathyCollect   - single run cBathy analysis (parallel)
 %   analyzeSingleBathyRun - batch analysis for a single stackName
-%   analyzeSingleBathyRunFrommBW - batch from an mBW stack in cx
-%   SETTINGS            - contains the params setting for each site
-%
-% Stack Routines: 
-%   loadBathyStack      - load all cameras for a bathy stack
+%   SampleParameterFile            - contains the params setting for each site
 %
 % Analysis Routines:
-%   analyzeBathyCollect - single run cBathy analysis (parallel)
 %   prepBathyInput      - prepare inputs for analysis
 %   csmInvertKAlpha     - main cBathy inversion routine for k-alpha
 %   bathyFromKAlpha     - nonlinear solver for bathy from k-alpha
@@ -22,8 +17,6 @@
 %   bathyCI 		- modified version of nlparci for cBathy
 %
 % Kalman Filtering:
-%   makeKalmanBathySeed - initialize the first run for K-filtering
-%   runningFilterBathy  - wrapper to Kalman filter a sequence of runs
 %   KalmanFilterBathy   - core Kalman filter routine
 %   findProcessError    - compute sensible process error
 %
@@ -36,6 +29,7 @@
 %   showHourlyBathyResults  - loop through a bathy sequence
 %   showHourlyKalmanResults - loop through smooth sequence
 %   plotBathyKalmanStep     - steps through runs showing all debug info
+%   showcBathyTimeSeriesMovie - show time series map movie from stack
 %   alterAnalysisArray 	    - allow change to the xm-ym values for debugging
 %
 % Viewing the cBathy Stack Data
