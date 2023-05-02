@@ -99,10 +99,10 @@ axis xy; axis tight; xlabel('x (m)'); ylabel('y (m)'); caxis([0 8]); colorbar
 title(['survey, ' datestr(epoch2Matlab(str2num(bathy.epoch)))]); colorbar; axis equal;
 
 % Now look at the bathy.tide structure and notice that the default tide 
- function failed (nan value).  EDIT argus02b again to change the tide
- function to findTideForCIRNDemo2023 (save).  Then re-run the analysis from line 57,
- but at line 85 use a different figure number (say 4) so you can compare the
- results with and without correct tide.
+%  function failed (nan value).  EDIT argus02b again to change the tide
+%  function to findTideForCIRNDemo2023 (save).  Then re-run the analysis from line 57,
+%  but at line 85 use a different figure number (say 4) so you can compare the
+%  results with and without correct tide.
 
 %% Now plot the different components for each frequency of cBathy output as a 
 % way to understand better the bathy structure.  Hit CR to cycle through
