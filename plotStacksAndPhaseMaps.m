@@ -24,13 +24,13 @@ plot(xyz(:,1),xyz(:,2),'b.',xyz(yInd,1),xyz(yInd,2),'r+')
 xlabel('x (m)'); ylabel('y (m)'); title('longshore transect')
 
 subplot 223
-imagesc(xyz(xInd,1),tm,data(:,xInd))
-datetick('y')
+imagesc(xyz(xInd,1),tm-tm(1),data(:,xInd))
+% datetick('y', 13)
 xlabel('x (m)'); ylabel('time (s)'); title('x-transect')
 
 subplot 224
-imagesc(xyz(yInd,2),tm,data(:,yInd))
-datetick('y')
+imagesc(xyz(yInd,2),tm-tm(1),data(:,yInd))
+% datetick('y')
 xlabel('y (m)'); ylabel('time (s)'); title('y-transect')
 
 % now do phase maps.  Leave in natural order of freqs for simplicity
