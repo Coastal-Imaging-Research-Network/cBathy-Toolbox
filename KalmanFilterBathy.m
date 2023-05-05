@@ -8,13 +8,21 @@ function smoothBathy = KalmanFilterBathy(priorBathy, newBathy, H)
 %  the prior.  Filtered data are stored in the sub-structure
 %  runningAverage.
 
+% Check if the prior has content.  If not, it is the initial estimate and
+% we need to make a seed from fCombined.
+if all(isnan(priorBathy.runningAverage.h(:)))    % need to init
+    priorBathy.runningAverage.h = priorBathy.fCombined.h;
+    priorBathy.runningAverage.hErr = priorBathy.fCombined.hErr;
+    priorBathy.runningAverage.P = priorBathy.fCombined.hErr.^2;
+    priorBathy.runningAverage.prior = 'initialValue';
+end
+
 smoothBathy = newBathy;       % a good start
 hNew = newBathy.fCombined.h; 
 hNewErr = newBathy.fCombined.hErr;
 hPrior = priorBathy.runningAverage.h;
 dt = (str2num(newBathy.epoch) - str2num(priorBathy.epoch)) / (24*3600);  % in days
-foo = parseFilename(priorBathy.sName);
-Q = findProcessError(foo.station, newBathy, H)*dt;
+Q = findProcessError(newBathy.params.stationStr, newBathy, H)*dt;
 P = sum(cat(3, priorBathy.runningAverage.P, Q),3,'omitnan');
 
 % update everywhere then fix the nan problems in prior or new

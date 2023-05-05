@@ -1,9 +1,9 @@
-function map = showcBathyTimeSeriesMovie(sn,pa, map)
+function map = showcBathyTimeSeriesMovie(xyz, t, data, pa, map)
 %
-%  map = showcBathyTimeSeriesMovie(stackName,pixArraySpecs,map)
+%  map = showcBathyTimeSeriesMovienNotCIL(xyz, t, data, pixArraySpecs,map)
 %
-%  load a full cBathy data collection and show as a movie.  This is to
-%  allow debugging, i.e. letting you see if actual waves are there.
+%  given a full cBathy data collection, xyz, t, data, show as a movie. 
+%  This allows debugging, i.e. letting you see if actual waves are there.
 %  The pixels are converted from discrete locations to a mapping in a
 %  regular array under the assumption that they were designed as an array.
 %  The array is described by user input information
@@ -20,18 +20,12 @@ function map = showcBathyTimeSeriesMovie(sn,pa, map)
 %  If nargin is three, the third argument is assumed to be the mapping and
 %  a new map is not calculated.
 
-DBConnect;
-n = parseFilename(sn);
-eval(n.station)
-bathy.epoch = n.time; bathy.sName = sn; bathy.params = params;
-[xyz, epoch, data, cam] = loadBathyStack(bathy.sName, bathy.params.DECIMATE);
-
 % if there was no map passed in, create an empty one
-if nargin < 3
+if nargin < 5
     map = [];
 end
 
-% if nargin < 2, create a default pa
+% if nargin < 4, create a default pa
 if nargin < 2
     pa = [ 20 20 ];
 end
@@ -49,19 +43,19 @@ Nx = length(x);
 Ny = length(y);
 
 figure(2); clf; colormap gray
+data = double(data);
 I = nan(Ny,Nx);
-for ii = 1: length(epoch)
+for ii = 1: length(t)
     I = reshape(data(ii,map),Ny,Nx);
     imagesc(x,y,log(I)); axis xy; axis equal; axis tight
-    pause(0.1)
+    pause(0.2)
 end
-
 %   Copyright (C) 2017  Coastal Imaging Research Network
 %                       and Oregon State University
 
-%    This program is free software: you can redistribute it and/or
-%    modify it under the terms of the GNU General Public License as
-%    published by the Free Software Foundation, version 3 of the
+%    This program is free software: you can redistribute it and/or  
+%    modify it under the terms of the GNU General Public License as 
+%    published by the Free Software Foundation, version 3 of the 
 %    License.
 
 %    This program is distributed in the hope that it will be useful,
@@ -75,4 +69,7 @@ end
 
 % CIRN: https://coastal-imaging-research-network.github.io/
 % CIL:  http://cil-www.coas.oregonstate.edu
+%
+%key cBathy
+%
 

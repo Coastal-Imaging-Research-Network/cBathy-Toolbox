@@ -78,8 +78,6 @@ Nym = length(ym);
 nanArray = nan(Nym, Nxm);
 fNanArray = nan([Nym, Nxm, params.nKeep]);
 
-bathy.timex = nanArray;
-
 bathy.fDependent.fB = fNanArray;
 bathy.fDependent.k = fNanArray;
 bathy.fDependent.a = fNanArray;
@@ -105,6 +103,13 @@ bathy.runningAverage.h = nanArray;
 bathy.runningAverage.hErr = nanArray;
 bathy.runningAverage.P = nanArray;
 bathy.runningAverage.Q = nanArray;
+bathy.runningAverage.K = nanArray;
+bathy.runningAverage.prior = '';
+
+bathy.timex = nanArray;
+bathy.bright = nanArray;
+bathy.dark = nanArray;
+
 
 
 %
