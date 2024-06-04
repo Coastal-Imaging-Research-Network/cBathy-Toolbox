@@ -91,7 +91,10 @@ for xind = 1:length(bathy.xm)
         xmValues = bathy.xm(xind);
         xy = xyz(:,1:2);
         ymValues = bathy.ym;
+
+        %for yind = 1:length(bathy.ym)
         parfor yind = 1:length(bathy.ym)
+        disp([xmValues,ymValues(yind)])
             [fDep{yind},camUsed(yind)] = csmInvertKAlpha( f, G, xy, cam, ...
                 xmValues, ymValues(yind), bathy );
         end  %% parfor yind

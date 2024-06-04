@@ -1,4 +1,4 @@
-# cBathy-2.0
+# cBathy-3.0
  README for cBathy
 
 When you type 'help {toolboxName}' where you insert your own toolbox
@@ -6,10 +6,14 @@ name, will give the Contents of the toolbox.
  
 The outline below shows the order of how analysis routines are called.
 
-Note: Version 2.0 requires Matlab 2016a or newer.
+Note: Version 3.0 requires Matlab 2016a or newer.
  
 This toolbox has been extracted from the full CIL version and SHOULD work on a standalone basis.  In doing this, a number of checks have been removed since these depend on CIL databases and standards.
  
+This toolbox has parallel functionality for video record lengths greater and less than 150s. 
+Short records from drones and satellites that are less 150s are too short for cross-spectral analysis because they do not have enough frequencies for band-averaging while maintaining sufficient spectral resolution.
+The name "Short" is appended to end of each script for short record processing.
+
 One demo file is provided along with example data.
 'democBathyVersion2p0' runs the main cBathy processing to create phase 1 and 2 results (fDependent and fCombined) and plots the bathymetry results in fCombined.  This is currently set to analyze 
 a test data set, 1447691340.Mon.Nov.16_16_29_00.GMT.2015.argus02b.cx.mBW.mat, one of the new standard testbed datat sets created by OSU.  The cBathy input data is contained the subfolder 

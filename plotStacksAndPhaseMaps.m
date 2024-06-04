@@ -36,6 +36,7 @@ xlabel('y (m)'); ylabel('time (s)'); title('y-transect')
 % now do phase maps.  Leave in natural order of freqs for simplicity
 fB = params.fB;
 nf = length(fB);
+disp(1./params.fB)
 nCols = ceil(sqrt(nf));     % chose a reasonable number of rows and cols for display
 nRows = ceil(nf/nCols);
 figure(11); set(gcf, 'name', 'Phase Maps'); clf; colormap('jet');
