@@ -55,9 +55,13 @@ for ix = 1: length(x)
             s = [bathy.fDependent.skill(id)];
             l = [bathy.fDependent.lam1(id)];
             hTemp = [bathy.fDependent.hTemp(id)];
+
             %% find dispersion sensitivity
-            gamma = 4*pi*pi*f.*f./(g.*k);
-            wMu = 1./interp1(gammaiBar, mu, gamma);
+            gamma = 4*pi*pi*f.*f./(g.*k); % Query gamma points
+            mui = interp1(gammaiBar,mu,gamma); % mui goes to inf as gamma approaches 1;
+            % NOTE: interp1 sets mu to NaN if the query value exceeds the largest value in the sample points
+	        mui(isnan(mui)) = inf; % sets NaNs in mui to infs; prevents NaN value for hErr at x,y locs downstream
+	        wMu = 1./mui;
             w = Wmi(id).*wMu.*l.*s./(eps+k);    % weights depend on skill and variance (lam)
             hInit = bathy.fDependent.hTemp(id)'*s / sum(s);
             
